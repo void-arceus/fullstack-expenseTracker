@@ -36,7 +36,7 @@ async function getUserExpenses(req, res) {
     const page = Number(req.query.page) || 1;
     const filterBy = req.query.filterBy || "all";
     const filterValue = req.query.filterValue || "";
-    const sortBy = req.query.sortBy || undefined;
+    const sortBy = req.query.sortBy || "";
     const sortValue = req.query.sortValue || "desc";
 
     // valid || expected filter values
@@ -70,7 +70,7 @@ async function getUserExpenses(req, res) {
             [filterBy]: filterValue,
           });
 
-    if (sortBy !== undefined) {
+    if (sortBy !== "") {
       const isValidSortBy = validSortByValues.find((el) => el === sortBy);
       const isValidSortValue = validSortValues.find((el) => el === sortValue);
       if (!isValidSortBy || !isValidSortValue) {

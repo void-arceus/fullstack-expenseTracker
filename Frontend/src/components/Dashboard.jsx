@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
 import { useToast } from "../context/ToastContext";
+import SummaryCard from "./SummaryCard";
 import axios from "axios";
 
 const Dashboard = () => {
@@ -110,28 +111,39 @@ const Dashboard = () => {
 
       {/* display recent expenses */}
       <section className="h-full flex flex-col">
-        <div className="max-h-1/2 flex-1 p-4">
-          <div>hii</div>
+        <div className="max-h-1/2 flex-1">
+          <div className="h-full p-2">
+            <SummaryCard />
+          </div>
           <div></div>
         </div>
         <div className="h-1/2 flex flex-col items-center w-full p-4">
-          <div className="w-full flex-1 flex items-center justify-end gap-4 py-2.5">
-            <button
-              onClick={() => {
-                navigate("/viewExpenses");
-              }}
-              className="bg-gray-200 text-md font-medium py-1.5 px-3 rounded-lg cursor-pointer shadow-sm hover:shadow-md"
-            >
-              View All
-            </button>
-            <button
-              onClick={() => {
-                navigate("/addExpense", { state: { from: location.pathname } });
-              }}
-              className="bg-gray-800 text-gray-100 font-medium py-1.5 px-2.5 rounded-lg cursor-pointer shadow-md hover:shadow-lg hover:opacity-95"
-            >
-              Add Expense
-            </button>
+          <div className="w-full flex-1 flex items-center justify-between gap-4 py-2.5">
+            <div>
+              <h2 className="text-lg font-medium text-gray-600">
+                Recent Transactions
+              </h2>
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => {
+                  navigate("/viewExpenses");
+                }}
+                className="bg-gray-200 text-md font-medium py-1.5 px-3 rounded-lg cursor-pointer shadow-sm hover:shadow-md"
+              >
+                View All
+              </button>
+              <button
+                onClick={() => {
+                  navigate("/addExpense", {
+                    state: { from: location.pathname },
+                  });
+                }}
+                className="bg-gray-800 text-gray-100 font-medium py-1.5 px-2.5 rounded-lg cursor-pointer shadow-md hover:shadow-lg hover:opacity-95"
+              >
+                Add Expense
+              </button>
+            </div>
           </div>
           <div className="border min-w-sm border-gray-300 w-full rounded-xl shadow-xl overflow-scroll">
             {expenseData.length > 0 ? (

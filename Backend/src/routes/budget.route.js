@@ -4,6 +4,7 @@ const authMiddleware = require("../Middleware/auth.middleware");
 
 const router = express.Router();
 
-router.post("/setBudget", authMiddleware.authUser, budgetController.setBudget);
+router.put("/setBudget", authMiddleware.authUser, budgetController.setBudget);
+router.get("/getBudget", authMiddleware.authUser, budgetController.getBudget);
 
 module.exports = router;

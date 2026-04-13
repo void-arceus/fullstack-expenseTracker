@@ -1,48 +1,43 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { getExpenses, deleteExpense } from "../services/expenseService";
 import { useToast } from "../context/ToastContext";
-import axios from "axios";
 
 const DisplayExpenses = () => {
-  const { showToast } = useToast();
   const [expenseData, setExpenseData] = useState([]);
+  const { showToast } = useToast();
   const navigate = useNavigate();
-  const [currFilter, setCurrFilter] = useState("all");
-  const [currFilterValue, setCurrFilterValue] = useState("");
-  const [currSortBy, setCurrSortBy] = useState("");
-  const [currSortValue, setCurrSortValue] = useState("desc");
-
-  // filter variables
-  const [sortBy, setSortBy] = useState("amount");
-  const [sortValue, setSortValue] = useState("desc");
   const [filterBy, setFilterBy] = useState("all");
   const [filterValue, setFilterValue] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  const [sortValue, setSortValue] = useState("desc");
+  const filters = useMemo(
+    () => ({ filterBy, filterValue, sortBy, sortValue }),
+    [filterBy, filterValue, sortBy, sortValue],
+  );
 
   useEffect(() => {
-    getData();
-  }, []);
+    fetchData();
+  }, [filters]);
 
-  function getData() {
-    axios
-      .get(`http://localhost:3000/api/expense/getExpenses`)
-      .then((res) => {
-        setExpenseData(res.data.data.data);
-      })
-      .catch(() => setExpenseData([]));
-  }
+  const fetchData = async () => {
+    try {
+      const res = await getExpenses(filters);
+      setExpenseData(res.data.data);
+    } catch (err) {
+      showToast("Something went wrong", "error");
+    }
+  };
 
-  function handleDeleteExpense(id) {
-    axios
-      .delete(`http://localhost:3000/api/expense/deleteExpense/${id}`)
-      .then(() => {
-        showToast("Expense Deleted Successfully", "success");
-        getData();
-      })
-      .catch((err) => {
-        const message = err.response.data.message || "Something went wrong";
-        showToast(message, "error");
-      });
-  }
+  const handleDelete = async (id) => {
+    try {
+      await deleteExpense(id);
+      fetchData(filters);
+      showToast("Expense Deleted Successfully!", "success");
+    } catch (err) {
+      showToast("Something went wrong!", "error");
+    }
+  };
 
   return (
     <main className="h-screen w-full flex flex-col">
@@ -61,30 +56,32 @@ const DisplayExpenses = () => {
               </button>
               <button
                 onClick={() => {
-                  setCurrFilter("all");
-                  setCurrFilterValue("all");
+                  setFilterBy("all");
+                  setFilterValue("");
+                  setSortBy("");
+                  setSortValue("desc");
                 }}
-                className={` ${currFilter === "all" ? "bg-gray-600 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
+                className={` ${filterBy === "all" ? "bg-gray-600 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
               >
                 <img src="/show_all.png" alt="all" className="h-5" />
                 All
               </button>
               <button
                 onClick={() => {
-                  setCurrFilter("expenseType");
-                  setCurrFilterValue("expense");
+                  setFilterBy("expenseType");
+                  setFilterValue("expense");
                 }}
-                className={` ${currFilterValue === "expense" ? "bg-gray-600 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
+                className={` ${filterValue === "expense" ? "bg-gray-600 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
               >
                 <img src="/expense_icon.png" alt="exp-icon" className="h-5" />
                 Expense
               </button>
               <button
                 onClick={() => {
-                  setCurrFilter("expenseType");
-                  setCurrFilterValue("income");
+                  setFilterBy("expenseType");
+                  setFilterValue("income");
                 }}
-                className={` ${currFilterValue === "income" ? "bg-gray-700 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
+                className={` ${filterValue === "income" ? "bg-gray-700 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
               >
                 <img src="income_icon.png" alt="income-icon" className="h-5" />
                 Income
@@ -95,26 +92,55 @@ const DisplayExpenses = () => {
                 <img src="/arrow.png" alt="arrow" className="h-5" />
                 Sort By:
               </p>
-              <button className="bg-gray-100 border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2">
+              <button
+                onClick={() => {
+                  sortBy === "updated" ? setSortBy("") : setSortBy("updated");
+                }}
+                className={` ${sortBy === "updated" ? "bg-gray-700 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
+              >
                 <img src="/date_icon.png" alt="date-icon" className="h-5" />
                 updated
               </button>
-              <button className="bg-gray-100 border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2">
+              <button
+                onClick={() => {
+                  sortBy === "amount" ? setSortBy("") : setSortBy("amount");
+                }}
+                className={`${sortBy === "amount" ? "bg-gray-700 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
+              >
                 <img src="/money.png" alt="money-icon" className="h-5" />
                 Amount
               </button>
-              <button className="bg-gray-100 border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2">
+              <button
+                onClick={() => {
+                  sortBy === "createdAt"
+                    ? setSortBy("")
+                    : setSortBy("createdAt");
+                }}
+                className={`${sortBy === "createdAt" ? "bg-gray-700 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
+              >
                 <img src="/date_icon.png" alt="date-icon" className="h-5" />
                 createdAt
               </button>
             </div>
             <div className="flex items-center gap-3">
               <p className="text-md font-medium">Sort Value:</p>
-              <button className="bg-gray-100 border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2">
+              <button
+                onClick={() => {
+                  sortValue === "asc" ? setSortValue("") : setSortValue("asc");
+                }}
+                className={`${sortBy !== "" && sortValue === "asc" ? "bg-gray-700 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
+              >
                 <img src="/ascending-sort.png" alt="asc-icon" className="h-5" />
                 asc
               </button>
-              <button className="bg-gray-100 border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2">
+              <button
+                onClick={() => {
+                  sortValue === "desc"
+                    ? setSortValue("")
+                    : setSortValue("desc");
+                }}
+                className={`${sortBy !== "" && sortValue === "desc" ? "bg-gray-700 text-gray-100" : "bg-gray-100"} border border-transparent py-1.5 shadow-sm px-4 rounded-lg cursor-pointer hover:shadow-md hover:border hover:border-gray-500 flex items-center gap-2`}
+              >
                 <img
                   src="descending_sort.png"
                   alt="desc-icon"
@@ -172,7 +198,7 @@ const DisplayExpenses = () => {
                       <img src="/edit-text.png" alt="edit" className="h-5" />
                     </button>
                     <button
-                      onClick={() => handleDeleteExpense(exp._id)}
+                      onClick={() => handleDelete(exp._id)}
                       className="cursor-pointer"
                     >
                       <img src="/delete.png" alt="delete" className="h-5" />
