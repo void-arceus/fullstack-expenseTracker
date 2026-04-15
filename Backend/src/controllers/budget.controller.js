@@ -41,7 +41,6 @@ async function setBudget(req, res) {
 async function getBudget(req, res) {
   try {
     let budget = await budgetModel.findOne({ userId: req.user._id });
-    console.log("Budget:", budget);
     if (!budget) budget = { budget: 0 };
     return res
       .status(200)

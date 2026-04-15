@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 function isValidEmail(email) {
+  // logic to be implemeted yet
+  if (!email) return false;
   return true;
 }
 

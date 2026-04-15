@@ -117,8 +117,8 @@ const Dashboard = () => {
           </div>
           <div></div>
         </div>
-        <div className="h-1/2 flex flex-col items-center w-full p-4">
-          <div className="w-full flex-1 flex items-center justify-between gap-4 py-2.5">
+        <div className="h-1/2 w-full flex flex-col p-4">
+          <div className="w-full flex items-center justify-between gap-4 py-3">
             <div>
               <h2 className="text-lg font-medium text-gray-600">
                 Recent Transactions

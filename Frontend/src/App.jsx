@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { FinanceProvider } from "./context/FinanceContext";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
@@ -13,17 +14,19 @@ const App = () => {
   return (
     <>
       <AuthProvider>
-        <Router>
-          <Routes>
-            <Route element={<ToastLayout />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/addExpense" element={<AddExpenseForm />} />
-              <Route path="viewExpenses" element={<DisplayExpenses />} />
-            </Route>
-          </Routes>
-        </Router>
+        <FinanceProvider>
+          <Router>
+            <Routes>
+              <Route element={<ToastLayout />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/addExpense" element={<AddExpenseForm />} />
+                <Route path="viewExpenses" element={<DisplayExpenses />} />
+              </Route>
+            </Routes>
+          </Router>
+        </FinanceProvider>
       </AuthProvider>
     </>
   );
