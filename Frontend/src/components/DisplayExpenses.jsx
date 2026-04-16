@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getExpenses, deleteExpense } from "../services/expenseService";
 import { useToast } from "../context/ToastContext";
+import { BarGraph } from "./Chart";
 
 const DisplayExpenses = () => {
   const [expenseData, setExpenseData] = useState([]);
@@ -40,9 +41,16 @@ const DisplayExpenses = () => {
   };
 
   return (
-    <main className="h-screen w-full flex flex-col">
+    <main className="h-fit w-full flex flex-col">
       {/* section to display bar graph */}
-      <section className="w-full"></section>
+      <section className="h-100 w-full p-2">
+        <div className="h-full w-full p-2 border-2 border-gray-400 flex flex-col items-start gap-4">
+          <h1 className="text-2xl font-medium text-shadow-md">
+            Amount Spent Per Category:
+          </h1>
+          <BarGraph />
+        </div>
+      </section>
 
       {/* display the expenses/incomes with filter option and pagination */}
       <section className="w-full flex flex-col gap-2 p-4">

@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
 import { useToast } from "../context/ToastContext";
+import { ShowPieChart } from "./Chart";
 import SummaryCard from "./SummaryCard";
 import axios from "axios";
 
@@ -111,11 +112,13 @@ const Dashboard = () => {
 
       {/* display recent expenses */}
       <section className="h-full flex flex-col">
-        <div className="max-h-1/2 flex-1">
-          <div className="h-full p-2">
+        <div className="w-full max-h-1/2 flex-1 flex">
+          <div className="h-full w-1/2 p-2">
             <SummaryCard />
           </div>
-          <div></div>
+          <div className="h-full w-1/2 p-4">
+            <ShowPieChart />
+          </div>
         </div>
         <div className="h-1/2 w-full flex flex-col p-4">
           <div className="w-full flex items-center justify-between gap-4 py-3">

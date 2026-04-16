@@ -77,8 +77,8 @@ const SummaryCard = () => {
   }
 
   return (
-    <div className="border-box h-full w-full p-2">
-      <div className="w-1/2 h-full flex flex-col items-start gap-1 border border-gray-200 rounded-xl p-4 shadow-md cursor-pointer hover:shadow-lg">
+    <div className="border-box h-full p-2">
+      <div className="w-full h-full flex flex-col items-start gap-1 border border-gray-200 rounded-xl p-4 shadow-md cursor-pointer hover:shadow-lg">
         <div>
           <h1 className="text-xl font-bold">Total Income: ₹ {income}</h1>
         </div>
