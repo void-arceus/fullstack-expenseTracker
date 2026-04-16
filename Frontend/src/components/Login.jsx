@@ -32,7 +32,7 @@ const Login = () => {
 
   return (
     <div className="h-screen w-full relative">
-      <div className="flex flex-col items-center gap-4 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-85 h-fit py-10 rounded-2xl border-2 border-gray-200 shadow-xl">
+      <div className="h-fit w-85 md:w-105 flex flex-col items-center gap-4 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 py-10 rounded-2xl border-2 border-gray-200 shadow-xl duration-200 ease-in-out">
         <div className="w-full text-center">
           <h1 className="text-4xl font-medium text-shadow-lg">Login</h1>
         </div>

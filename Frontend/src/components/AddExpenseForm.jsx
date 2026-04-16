@@ -33,7 +33,7 @@ const AddExpenseForm = () => {
 
   return (
     <div className="h-screen w-full relative">
-      <div className="border border-gray-200 rounded-2xl sm:w-lg w-11/12 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 py-6 shadow-lg ease-in-out duration-200">
+      <div className="h-fit w-[95%] md:w-160 border border-gray-200 rounded-2xl absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 py-6 shadow-lg ease-in-out duration-200">
         <div className="w-full text-center p-4">
           <h1 className="text-3xl font-medium text-shadow-lg">
             Create Expense
@@ -56,7 +56,7 @@ const AddExpenseForm = () => {
             required
           />
 
-          <div className="w-full flex">
+          <div className="w-full flex items-center">
             <div className="flex-2 flex gap-2 items-center">
               <label htmlFor="expenseType" className="text-md font-medium">
                 Expense Type:
@@ -69,12 +69,12 @@ const AddExpenseForm = () => {
                 <option value="income">Income</option>
               </select>
             </div>
-            <div className="flex-1">
+            <div>
               <input
                 name="amount"
                 type="text"
                 placeholder="Amount"
-                className="w-full border-2 border-gray-400 rounded-lg p-2 outline-0 focus:border-gray-600"
+                className="w-20 sm:w-50 border-2 border-gray-400 rounded-lg p-1.5 outline-0 focus:border-gray-600"
               />
             </div>
           </div>

@@ -77,69 +77,72 @@ const SummaryCard = () => {
   }
 
   return (
-    <div className="border-box h-full p-2">
-      <div className="w-full h-full flex flex-col items-start gap-1 border border-gray-200 rounded-xl p-4 shadow-md cursor-pointer hover:shadow-lg">
+    <div className="border-box h-full w-full p-2">
+      <div className="w-full h-full flex flex-col items-start gap-2 border border-gray-200 rounded-xl p-4 shadow-md cursor-pointer hover:shadow-lg text-md font-medium">
         <div>
-          <h1 className="text-xl font-bold">Total Income: ₹ {income}</h1>
-        </div>
-        <div>
-          <h1 className="text-xl font-bold">Total Spending: ₹ {spending}</h1>
-        </div>
-        <div>
-          <h1 className="text-xl font-bold">Remaining: ₹ {remaining}</h1>
-        </div>
-        <div>
-          <h1 className="text-xl font-bold">Savings: ₹ {saving}</h1>
-        </div>
-        <div className="w-full flex flex-col gap-2">
-          <h1 className="text-xl font-bold">Budget: ₹ {budget}</h1>
-          <div className="w-full">
-            {isEditing ? (
-              <div className="w-full">
-                <form
-                  onSubmit={handleFormSubmit}
-                  className="flex flex-col gap-4 w-full"
-                >
-                  <input
-                    name="budget"
-                    type="number"
-                    defaultValue={budget}
-                    placeholder="Budget Amount"
-                    className="border-2 border-gray-400 outline-0 md:w-xs w-full p-1.5 rounded-lg focus:border-gray-700"
-                  />
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => {
-                        setIsEditing(false);
-                      }}
-                      className="bg-gray-300 px-4 py-1.5 font-medium rounded-lg border border-gray-300 shadow-md cursor-pointer hover:shadow-lg hover:bg-gray-400"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-gray-900 px-4 py-1.5 rounded-lg text-gray-100 font-medium cursor-pointer shadow-md hover:shadow-lg hover:opacity-90"
-                    >
-                      Update
-                    </button>
-                  </div>
-                </form>
-              </div>
-            ) : (
-              <button
-                onClick={() => {
-                  setIsEditing(true);
-                }}
-                className="bg-gray-900 text-gray-100 font-medium px-4 py-2 rounded-xl cursor-pointer shadow-lg hover:shadow-xl"
-              >
-                Edit Budget
-              </button>
-            )}
+          <div>
+            <h1>Total Income: ₹ {income}</h1>
           </div>
+          <div>
+            <h1>Total Spending: ₹ {spending}</h1>
+          </div>
+          <div>
+            <h1>Remaining: ₹ {remaining}</h1>
+          </div>
+          <div>
+            <h1>Savings: ₹ {saving}</h1>
+          </div>
+          <div>
+            <h1>Budget: ₹ {budget}</h1>
+          </div>
+        </div>
+        <div className="w-full">
+          {isEditing ? (
+            <div className="w-full">
+              <form
+                onSubmit={handleFormSubmit}
+                className="flex flex-col gap-4 w-full"
+              >
+                <input
+                  name="budget"
+                  type="number"
+                  defaultValue={budget}
+                  placeholder="Budget Amount"
+                  className="border-2 border-gray-400 outline-0 md:w-xs w-full p-1.5 rounded-lg focus:border-gray-700"
+                />
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsEditing(false);
+                    }}
+                    className={`bg-gray-300 px-2.5 py-1.5 font-medium rounded-lg border border-gray-300 shadow-md cursor-pointer hover:shadow-lg hover:bg-gray-400`}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className={`bg-gray-900 px-2.5 py-1.5 rounded-lg text-gray-100 font-medium cursor-pointer shadow-md hover:shadow-lg hover:opacity-90`}
+                  >
+                    Update
+                  </button>
+                </div>
+              </form>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                setIsEditing(true);
+              }}
+              className={`bg-gray-900 text-gray-100 font-medium px-2.5 py-1.5 rounded-lg cursor-pointer shadow-lg hover:shadow-xl`}
+            >
+              Edit Budget
+            </button>
+          )}
         </div>
         <div className="h-full flex items-center">
           <h1
-            className={`${overBudget ? "text-red-500" : "text-green-500"} text-lg font-medium`}
+            className={`${overBudget ? "text-red-600" : "text-green-600"} text-md font-medium`}
           >
             {overBudget
               ? "You exceeded the Budget"

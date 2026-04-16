@@ -64,8 +64,8 @@ export const ShowPieChart = () => {
   }
 
   return (
-    <div className="h-full w-full p-2 border border-gray-300 rounded-xl shadow-lg flex items-center justify-center">
-      <ResponsiveContainer width="100%" height={300}>
+    <div className="border-box h-full w-full p-2 border border-gray-200 rounded-xl shadow-lg flex items-center justify-center">
+      <ResponsiveContainer width="100%" height={350}>
         <PieChart width={400} height={400}>
           <Pie
             data={data}
