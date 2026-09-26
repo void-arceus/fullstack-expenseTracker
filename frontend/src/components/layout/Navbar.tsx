@@ -11,13 +11,13 @@ function Navbar({ handleToggleTheme, theme }: IThemeProp) {
                 />
                 <input
                     placeholder="Search transactions..."
-                    className="px-8 py-3 w-md outline-0 text-sm font-medium text-(--text-secondary) border border-(--border) focus:border-(--border-strong) rounded-xl"
+                    className="bg-(--surface) px-8 py-3 w-md outline-0 text-sm font-medium text-(--text-secondary) border border-(--border) focus:border-(--border-strong) rounded-xl"
                 />
             </div>
             <div className="flex items-center gap-4">
                 <button
                     onClick={handleToggleTheme}
-                    className="hover:cursor-pointer flex items-center gap-2 px-4 py-1.5 bg-(--accent-soft) text-(--accent) rounded-md"
+                    className="hover:cursor-pointer flex items-center gap-2 px-4 py-1.5 bg-(--theme-toggle-bg) text-(--theme-toggle-icon) rounded-2xl"
                 >
                     {theme === "light" ? (
                         <IoSunny size={16} />
@@ -28,7 +28,9 @@ function Navbar({ handleToggleTheme, theme }: IThemeProp) {
                         Toggle
                     </span>
                 </button>
-                <div></div>
+                <div className="h-10 w-10 bg-(--accent-soft) rounded-full flex items-center justify-center text-sm font-bold text-(--accent)">
+                    A
+                </div>
             </div>
         </div>
     );

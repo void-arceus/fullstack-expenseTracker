@@ -25,6 +25,9 @@ body {
     --info: #2563eb;
     --info-soft: #eff6ff;
     --warning: #f59e0b;
+    --theme-toggle-bg: #111827;
+    --theme-toggle-hover: #1f2937;
+    --theme-toggle-icon: #f8fafc;
     --chart-blue: #3b82f6;
     --chart-purple: #8b5cf6;
     --chart-green: #34d399;
@@ -49,6 +52,9 @@ body {
     --info: #60a5fa;
     --info-soft: #172554;
     --warning: #fbbf24;
+    --theme-toggle-bg: #f8fafc;
+    --theme-toggle-hover: #e2e8f0;
+    --theme-toggle-icon: #111827;
     --chart-blue: #3b82f6;
     --chart-purple: #8b5cf6;
     --chart-green: #34d399;

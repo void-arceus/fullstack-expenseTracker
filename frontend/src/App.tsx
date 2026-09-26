@@ -13,6 +13,7 @@ function App() {
         // checking local storage for theme
         let storedTheme = localStorage.getItem("aExpenseTrackerTheme");
         if (!storedTheme) storedTheme = "light";
+        setTheme({ theme: storedTheme === "light" ? "light" : "dark" });
         htmlElement.className = "";
         htmlElement.className = storedTheme;
     }, []);
