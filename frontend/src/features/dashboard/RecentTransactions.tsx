@@ -9,73 +9,74 @@ interface ITransaction {
     type: string;
 }
 
+export const transactions: ITransaction[] = [
+    {
+        id: 1,
+        title: "Grocery Shopping",
+        category: "Food",
+        amount: 84.5,
+        date: "Sep 25, 2026",
+        type: "expense",
+    },
+    {
+        id: 2,
+        title: "Salary",
+        category: "Income",
+        amount: 3200,
+        date: "Sep 24, 2026",
+        type: "income",
+    },
+    {
+        id: 3,
+        title: "Netflix",
+        category: "Entertainment",
+        amount: 15.99,
+        date: "Sep 23, 2026",
+        type: "expense",
+    },
+    {
+        id: 4,
+        title: "Electricity Bill",
+        category: "Bills",
+        amount: 72.35,
+        date: "Sep 22, 2026",
+        type: "expense",
+    },
+    {
+        id: 5,
+        title: "Freelance Payment",
+        category: "Income",
+        amount: 850,
+        date: "Sep 21, 2026",
+        type: "income",
+    },
+    {
+        id: 6,
+        title: "Coffee",
+        category: "Food",
+        amount: 6.75,
+        date: "Sep 20, 2026",
+        type: "expense",
+    },
+    {
+        id: 7,
+        title: "Uber",
+        category: "Transport",
+        amount: 24.8,
+        date: "Sep 19, 2026",
+        type: "expense",
+    },
+    {
+        id: 8,
+        title: "Amazon",
+        category: "Shopping",
+        amount: 129.99,
+        date: "Sep 18, 2026",
+        type: "expense",
+    },
+];
+
 function RecentTransactions() {
-    const transactions: ITransaction[] = [
-        {
-            id: 1,
-            title: "Grocery Shopping",
-            category: "Food",
-            amount: 84.5,
-            date: "Sep 25, 2026",
-            type: "expense",
-        },
-        {
-            id: 2,
-            title: "Salary",
-            category: "Income",
-            amount: 3200,
-            date: "Sep 24, 2026",
-            type: "income",
-        },
-        {
-            id: 3,
-            title: "Netflix",
-            category: "Entertainment",
-            amount: 15.99,
-            date: "Sep 23, 2026",
-            type: "expense",
-        },
-        {
-            id: 4,
-            title: "Electricity Bill",
-            category: "Bills",
-            amount: 72.35,
-            date: "Sep 22, 2026",
-            type: "expense",
-        },
-        {
-            id: 5,
-            title: "Freelance Payment",
-            category: "Income",
-            amount: 850,
-            date: "Sep 21, 2026",
-            type: "income",
-        },
-        {
-            id: 6,
-            title: "Coffee",
-            category: "Food",
-            amount: 6.75,
-            date: "Sep 20, 2026",
-            type: "expense",
-        },
-        {
-            id: 7,
-            title: "Uber",
-            category: "Transport",
-            amount: 24.8,
-            date: "Sep 19, 2026",
-            type: "expense",
-        },
-        {
-            id: 8,
-            title: "Amazon",
-            category: "Shopping",
-            amount: 129.99,
-            date: "Sep 18, 2026",
-            type: "expense",
-        },
-    ];
     return (
         <div className="w-full py-2 max-h-full">
             <div className="border border-(--border) p-2 rounded-lg shadow-sm bg-(--surface) px-4 flex flex-col items-start gap-4">
@@ -96,7 +97,9 @@ function RecentTransactions() {
                             >
                                 {/* logo */}
                                 <div className="h-10 w-10 flex items-center justify-center">
-                                    <div className="h-10 w-10 border border-(--border) rounded-full text-xs font-bold flex items-center justify-center">
+                                    <div
+                                        className={`${t.type === "expense" ? "bg-(--danger-soft)" : "bg-(--success-soft)"} h-10 w-10 border border-(--border) rounded-full text-xs font-bold flex items-center justify-center`}
+                                    >
                                         {t.category[0]}
                                     </div>
                                 </div>

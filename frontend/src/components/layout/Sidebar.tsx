@@ -6,7 +6,12 @@ import { MdLogout, MdOutlineAnalytics } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaSackDollar } from "react-icons/fa6";
 
-function Sidebar() {
+interface ISidebarProps {
+    handleSetMenu: (val: string) => void;
+    menu: string;
+}
+
+function Sidebar({ handleSetMenu, menu }: ISidebarProps) {
     return (
         <div className="relative bg-(--surface) h-full w-xs border-r border-(--border) p-2 flex flex-col items-start justify-start gap-2">
             <div className="w-full flex items-center justify-start gap-2 p-2 text-(--text-primary) mb-2 hover:cursor-pointer">
@@ -15,31 +20,49 @@ function Sidebar() {
                     ExpenseTracker
                 </h1>
             </div>
-            <div className="w-full flex flex-col items-start justify-start gap-1 pb-4 border-b border-(--border)">
-                <button className="w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md text-(--text-primary) hover:text-(--accent-hover)">
+            <div className="w-full flex flex-col items-start justify-start gap-0.5 pb-4 border-b border-(--border)">
+                <button
+                    onClick={() => handleSetMenu("dashboard")}
+                    className={`${menu === "dashboard" ? "bg-(--accent-soft) text-(--accent)" : "text-(--text-primary)"} w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md hover:text-(--accent-hover`}
+                >
                     <RxDashboard size={20} />
                     <p className="text-xs font-bold select-none">Dashboard</p>
                 </button>
-                <button className="w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md text-(--text-primary)  hover:text-(--accent-hover)">
+                <button
+                    onClick={() => handleSetMenu("transactions")}
+                    className={`${menu === "transactions" ? "bg-(--accent-soft) text-(--accent)" : "text-(--text-primary)"} w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md hover:text-(--accent-hover`}
+                >
                     <AiOutlineTransaction size={20} />
                     <p className="text-xs font-bold select-none">
                         Transactions
                     </p>
                 </button>
-                <button className="w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md text-(--text-primary)  hover:text-(--accent-hover)">
+                <button
+                    onClick={() => handleSetMenu("budget")}
+                    className={`${menu === "budget" ? "bg-(--accent-soft) text-(--accent)" : "text-(--text-primary)"} w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md hover:text-(--accent-hover`}
+                >
                     <FaSackDollar size={16} />
                     <p className="text-xs font-bold select-none">Budget</p>
                 </button>
-                <button className="w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md text-(--text-primary)  hover:text-(--accent-hover)">
+                <button
+                    onClick={() => handleSetMenu("categories")}
+                    className={`${menu === "categories" ? "bg-(--accent-soft) text-(--accent)" : "text-(--text-primary)"} w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md hover:text-(--accent-hover`}
+                >
                     <TbCategoryPlus size={20} />
                     <p className="text-xs font-bold select-none">Categories</p>
                 </button>
-                <button className="w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md text-(--text-primary)  hover:text-(--accent-hover)">
+                <button
+                    onClick={() => handleSetMenu("analytics")}
+                    className={`${menu === "analytics" ? "bg-(--accent-soft) text-(--accent)" : "text-(--text-primary)"} w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md hover:text-(--accent-hover`}
+                >
                     <MdOutlineAnalytics size={20} />
                     <p className="text-xs font-bold select-none">Analytics</p>
                 </button>
             </div>
-            <button className="w-full mt-2 px-2 py-3 text-(--text-primary) flex items-center justify-start gap-3 hover:cursor-pointer hover:bg-(--accent-soft) rounded-md  hover:text-(--accent-hover)">
+            <button
+                onClick={() => handleSetMenu("settings")}
+                className={`${menu === "settings" ? "bg-(--accent-soft) text-(--accent)" : "text-(--text-primary)"} w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md hover:text-(--accent-hover`}
+            >
                 <IoSettingsOutline size={20} />
                 <p className="text-xs font-bold">Settings</p>
             </button>
