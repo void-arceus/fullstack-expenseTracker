@@ -13,7 +13,7 @@ interface ISidebarProps {
 
 function Sidebar({ handleSetMenu, menu }: ISidebarProps) {
     return (
-        <div className="relative bg-(--surface) h-full w-xs border-r border-(--border) p-2 flex flex-col items-start justify-start gap-2">
+        <div className="relative bg-(--surface) h-full min-w-3xs w-3xs border-r border-(--border) p-2 flex flex-col items-start justify-start gap-2">
             <div className="w-full flex items-center justify-start gap-2 p-2 text-(--text-primary) mb-2 hover:cursor-pointer">
                 <GiExpense size={20} />
                 <h1 className="text-md font-bold select-none">

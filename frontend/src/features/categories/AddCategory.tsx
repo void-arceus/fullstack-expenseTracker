@@ -3,7 +3,9 @@ function AddCategory() {
         <div className="h-full w-full pt-18">
             <div className="w-full py-4 p-2 border border-(--border) rounded-lg shadow-sm bg-(--surface) flex flex-col gap-4">
                 <div className="w-full text-start">
-                    <h1 className="text-md font-bold">Add New Category</h1>
+                    <h1 className="text-md font-bold text-(--text-primary)">
+                        Add New Category
+                    </h1>
                 </div>
                 <form
                     onSubmit={(e) => e.preventDefault()}

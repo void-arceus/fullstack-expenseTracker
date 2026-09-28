@@ -5,6 +5,16 @@ body {
     font-family: "Manrope", sans-serif;
 }
 
+/* hidden scrollbar */
+* {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
 :root,
 .light {
     --background: #f8fafc;

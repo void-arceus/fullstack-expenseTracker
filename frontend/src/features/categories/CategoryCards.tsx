@@ -4,7 +4,7 @@ import { LiaCoinsSolid } from "react-icons/lia";
 import { LuChartNoAxesCombined } from "react-icons/lu";
 function CategoryCards() {
     return (
-        <div className="w-full grid grid-cols-4 gap-3">
+        <div className="max-w-full w-full grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 grid-cols-1 gap-3">
             <div className="border border-(--border) p-4 rounded-xl bg-(--surface) hover:bg-(--surface-hover) flex items-center gap-4">
                 <div className=" w-10 h-full flex items-start justiyf-start">
                     <div className="h-10 w-10 bg-(--danger-soft) rounded-full flex items-center justify-center">

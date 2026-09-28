@@ -104,76 +104,106 @@ type CategoryType = keyof typeof categoryColors;
 
 function CategoryDetails() {
     return (
-        <div className="h-full w-full py-2">
-            <div className="h-fit w-full border border-(--border) overflow-hidden rounded-xl bg-(--surface) shadow-xs">
-                <table className="w-full border-separate border-spacing-y-2">
-                    <thead>
-                        <tr>
-                            <th className="text-start px-4 py-2 text-sm font-bold text-(--text-primary)">
-                                Category
-                            </th>
-                            <th className="text-start px-4 py-2 text-sm font-bold text-(--text-primary)">
-                                Monthly Budget
-                            </th>
-                            <th className="text-start px-4 py-2 text-sm font-bold text-(--text-primary)">
-                                Spent
-                            </th>
-                            <th className="text-start px-4 py-2 text-sm font-bold text-(--text-primary)">
-                                Remaining
-                            </th>
-                            <th className="text-start px-4 py-2 text-sm font-bold text-(--text-primary)">
-                                Progress
-                            </th>
-                            <th className="text-start px-4 py-2 text-sm font-bold text-(--text-primary)">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="[&>tr:last-child>td]:border-b-0">
-                        {categories.map((c, index) => (
-                            <tr key={index}>
-                                <td className="text-start px-4 py-3 text-xs font-semibold text-(--text-secondary) border-b border-(--border) flex items-center justify-start gap-2">
-                                    <div
-                                        className="h-8 w-8 bg-red-100 rounded-full flex items-center justify-center"
-                                        style={{
-                                            backgroundColor: `var(${
-                                                categoryColors[
-                                                    c.category.toLowerCase() as CategoryType
-                                                ].bg
-                                            })`,
-                                        }}
-                                    >
-                                        {
-                                            categoryColors[
-                                                c.category.toLowerCase() as CategoryType
-                                            ].icon
-                                        }
-                                    </div>
-                                    {c.category}
-                                </td>
-                                <td className="text-start px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border)">
-                                    {c.monthlyBudget}
-                                </td>
-                                <td className="text-start px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border)">
-                                    {c.spent}
-                                </td>
-                                <td className="text-start px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border)">
-                                    {c.remaining}
-                                </td>
-                                <td className="text-start px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border)">
-                                    {c.progress}
-                                </td>
-                                <td className="text-start px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border)">
-                                    <button className="hover:cursor-pointer font-bold text-lg">
-                                        ...
-                                    </button>
-                                </td>
+        <div className="h-full min-w-0 w-full py-2">
+            <div className="h-fit w-full border border-(--border) rounded-xl bg-(--surface) shadow-xs overflow-hidden">
+                <div className="w-full overflow-x-auto">
+                    <table className="w-full border-separate table-fixed overflow-x-scroll">
+                        <thead>
+                            <tr>
+                                <th className="sticky top-0 bg-(--surface) w-[20%] text-start px-4 py-2 text-xs font-bold text-(--text-primary)">
+                                    Category
+                                </th>
+                                <th className="w-[15%] text-start px-4 py-2 text-xs font-bold text-(--text-primary)">
+                                    Monthly Budget
+                                </th>
+                                <th className="w-[15%] text-start px-4 py-2 text-xs font-bold text-(--text-primary)">
+                                    Spent
+                                </th>
+                                <th className="w-[15%] text-start px-4 py-2 text-xs font-bold text-(--text-primary)">
+                                    Remaining
+                                </th>
+                                <th className="w-[25%] text-start px-4 py-2 text-xs font-bold text-(--text-primary)">
+                                    Progress
+                                </th>
+                                <th className="w-[10%] text-start px-4 py-2 text-xs font-bold text-(--text-primary)">
+                                    Actions
+                                </th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-                <div className="md:hidden w-full flex items-center justify-center py-4 px-2">
-                    <button className="text-xs font-semibold flex items-center justify-center gap-1 w-full p-2.5 bg-(--accent) rounded-lg hover:cursor-pointer text-[#ffffff] select-none hover:bg-(--accent-hover) active:scale-[0.98] transition transform-scale duration-150 ease-in shadow-sm hover:shadow-md">
+                        </thead>
+
+                        <tbody className="[&>tr:last-child>td]:border-b-0">
+                            {categories.map((c, index) => {
+                                const type =
+                                    c.category.toLowerCase() as CategoryType;
+
+                                return (
+                                    <tr key={c.id ?? index}>
+                                        <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border)">
+                                            <div className="flex items-center justify-start gap-2">
+                                                <div
+                                                    className="h-8 w-8 shrink-0 rounded-full flex items-center justify-center"
+                                                    style={{
+                                                        backgroundColor: `var(${categoryColors[type].bg})`,
+                                                        color: `var(${categoryColors[type].text})`,
+                                                    }}
+                                                >
+                                                    {categoryColors[type].icon}
+                                                </div>
+
+                                                <span>{c.category}</span>
+                                            </div>
+                                        </td>
+
+                                        <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border) whitespace-nowrap">
+                                            ₹
+                                            {c.monthlyBudget.toLocaleString(
+                                                "en-IN",
+                                            )}
+                                        </td>
+
+                                        <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border) whitespace-nowrap">
+                                            ₹{c.spent.toLocaleString("en-IN")}
+                                        </td>
+
+                                        <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border) whitespace-nowrap">
+                                            ₹
+                                            {c.remaining.toLocaleString(
+                                                "en-IN",
+                                            )}
+                                        </td>
+
+                                        <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border) whitespace-nowrap">
+                                            <div
+                                                className="w-full h-2 flex items-center justify-start rounded-full"
+                                                style={{
+                                                    backgroundColor: `var(${categoryColors[type].bg})`,
+                                                }}
+                                            >
+                                                <div
+                                                    className={`h-2 rounded-full`}
+                                                    style={{
+                                                        width: `${c.progress}%`,
+                                                        backgroundColor: `var(${categoryColors[type].text})`,
+                                                    }}
+                                                />
+                                            </div>
+                                            {c.progress}%
+                                        </td>
+
+                                        <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border)">
+                                            <button className="text-lg font-bold hover:cursor-pointer">
+                                                ...
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="md:hidden w-full flex items-center justify-center py-4 px-2 border-t border-(--border)">
+                    <button className="text-xs font-semibold flex items-center justify-center gap-1 w-full p-2.5 bg-(--accent) rounded-lg hover:cursor-pointer text-[#ffffff] select-none hover:bg-(--accent-hover) active:scale-[0.98] transition-transform duration-150 ease-in shadow-sm hover:shadow-md">
                         <HiMiniPlus className="text-lg font-bold" />
                         <span>Add Category</span>
                     </button>

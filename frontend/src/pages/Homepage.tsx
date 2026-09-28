@@ -38,13 +38,13 @@ function Homepage({ handleToggleTheme, theme }: IThemeProp) {
     function handleSetMenu(val: string) {
         setMenu(val);
     }
-
     return (
-        <main className="w-full h-screen bg-(--background) flex items-center">
+        <main className="w-full h-screen min-w-0 bg-(--background) flex">
             <Sidebar handleSetMenu={handleSetMenu} menu={menu} />
-            <div className="relative w-full h-full">
+
+            <div className="relative h-full min-w-0 flex-1">
                 <Navbar handleToggleTheme={handleToggleTheme} theme={theme} />
-                {displayView(menu)}
+                <div className="min-w-0 w-full h-full">{displayView(menu)}</div>
             </div>
         </main>
     );

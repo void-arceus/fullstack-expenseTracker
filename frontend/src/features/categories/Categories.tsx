@@ -4,12 +4,13 @@ import AddCategory from "./AddCategory";
 
 function Categories() {
     return (
-        <div className="pt-18 h-full w-full px-6 flex items-center gap-4">
-            <div className="h-full flex flex-col items-start justify-start gap-4 w-[70%]">
+        <div className="pt-18 h-full w-full min-w-0 px-6 flex items-center gap-4">
+            <div className="h-full min-w-0 flex-1 flex flex-col items-start justify-start gap-4 overflow-scroll">
                 <CategoryHeader />
                 <CategoryDetails />
             </div>
-            <div className="w-[30%] h-full flex items-start justify-start">
+
+            <div className="hidden xl:flex w-80 shrink-0 h-full items-start justify-start">
                 <AddCategory />
             </div>
         </div>

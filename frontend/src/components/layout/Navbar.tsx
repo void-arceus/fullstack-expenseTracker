@@ -28,7 +28,7 @@ function Navbar({ handleToggleTheme, theme }: IThemeProp) {
                         Toggle
                     </span>
                 </button>
-                <div className="h-10 w-10 bg-(--accent-soft) rounded-full flex items-center justify-center text-sm font-bold text-(--accent)">
+                <div className="h-10 w-10 bg-(--accent-soft) rounded-full flex items-center justify-center text-sm font-bold text-(--accent) select-none hover:cursor-pointer">
                     A
                 </div>
             </div>
