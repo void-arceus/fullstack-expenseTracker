@@ -13,7 +13,7 @@ function DashboardHeader() {
                         Here's your financial overview, arceus
                     </p>
                 </div>
-                <button className="text-sm font-semibold bg-(--accent) hover:bg-(--accent-hover) flex items-center gap-2 hover:cursor-pointer px-4 py-2 rounded-md text-(--accent-soft) select-none shadow-sm hover:shadow-lg active:scale-[0.98]">
+                <button className="text-sm font-semibold bg-(--accent) hover:bg-(--accent-hover) flex items-center gap-2 hover:cursor-pointer px-4 py-2 rounded-md text-[#ffffff] select-none shadow-sm hover:shadow-lg active:scale-[0.98]">
                     <FaPlus size={12} /> Add Transaction
                 </button>
             </div>

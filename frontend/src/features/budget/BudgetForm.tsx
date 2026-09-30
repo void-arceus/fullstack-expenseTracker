@@ -2,7 +2,7 @@ function BudgetForm() {
     return (
         <div className="flex-2 border border-(--border) rounded-xl p-2 bg-(--surface)">
             <form className="w-full p-2 flex flex-col items-start justify-start gap-4">
-                <div className="w-full flex flex-col items-start justify-start gap-1">
+                <div className="w-full flex flex-col items-start justify-start gap-2">
                     <label
                         htmlFor="category"
                         className="text-xs font-bold text-(--text-secondary)"
@@ -15,7 +15,7 @@ function BudgetForm() {
                         className="w-full border border-(--border) rounded-lg outline-0 py-2.5 p-2 text-xs text-(--text-secondary) font-semibold focus:border-(--border-strong)"
                     />
                 </div>
-                <div className="w-full flex flex-col items-start justify-start gap-1">
+                <div className="w-full flex flex-col items-start justify-start gap-2">
                     <label
                         id="budgetAmount"
                         className="text-xs font-bold text-(--text-secondary)"
@@ -42,7 +42,7 @@ function BudgetForm() {
                         </span>
                     </div>
                 </div>
-                <div className="w-full flex flex-col items-start justify-start gap-1">
+                <div className="w-full flex flex-col items-start justify-start gap-2">
                     <label
                         htmlFor="startDate"
                         className="text-xs font-bold text-(--text-secondary)"
@@ -55,7 +55,7 @@ function BudgetForm() {
                         className="w-full border border-(--border) rounded-lg outline-0 py-2.5 p-2 text-xs text-(--text-secondary) font-semibold focus:border-(--border-strong)"
                     />
                 </div>
-                <div className="w-full flex flex-col items-start justify-start gap-1">
+                <div className="w-full flex flex-col items-start justify-start gap-2">
                     <label
                         htmlFor="budgetNote"
                         className="text-xs font-bold text-(--text-secondary)"

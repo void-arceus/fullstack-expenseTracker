@@ -25,7 +25,7 @@ function BudgetPreview() {
                     <div className="w-full flex flex-col items-start justify-start gap-2">
                         <div className="w-full flex items-center justify-between">
                             <p className="text-xs font-bold text-(--text-muted)">
-                                Budget Amount{" "}
+                                Budget Amount
                             </p>
                             <p className="text-xs font-bold text-(--text-secondary)">
                                 $500
@@ -48,15 +48,15 @@ function BudgetPreview() {
                             </p>
                         </div>
                     </div>
-                    <div className="w-full h-20 rounded-lg flex items-center gap-4">
-                        <div className="h-20 flex items-start py-2">
+                    <div className="w-full h-20 flex items-center gap-4 bg-(--accent-soft) p-2 rounded-lg">
+                        <div className="h-20 flex items-start py-2 text-(--accent-hover)">
                             <HiLightBulb size={20} />
                         </div>
-                        <div className="flex flex-col items-start justify-start">
+                        <div className="h-20 flex flex-col items-start justify-start gap-2 py-2">
                             <h2 className="text-sm font-bold text-(--accent-hover)">
                                 Tip
                             </h2>
-                            <p>
+                            <p className="text-xs font-semibold text-(--accent)">
                                 You can always edit or delete this budget from
                                 the Budgets page later
                             </p>

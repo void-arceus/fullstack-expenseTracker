@@ -3,7 +3,7 @@ import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
 import Dashboard from "../features/dashboard/Dashboard";
 import Categories from "../features/categories/Categories";
-import Transactions from "../features/Transactions/Transactions";
+import Transactions from "../features/transactions/Transactions";
 import Analytics from "../features/analytics/Analytics";
 import Budget from "../features/budget/Budget";
 import Settings from "../features/settings/Settings";
