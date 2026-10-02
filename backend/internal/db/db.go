@@ -12,12 +12,12 @@ import (
 )
 
 type Database struct {
-	Client		*mongo.Client
-	Db 			*mongo.Database
+	Client *mongo.Client
+	Db     *mongo.Database
 }
 
-func Connect () (*Database, error) {
-	mongoURI := os.Getenv("MONGO_URI")	
+func Connect() (*Database, error) {
+	mongoURI := os.Getenv("MONGO_URI")
 	if mongoURI == "" {
 		return nil, fmt.Errorf("MONGO_URI environment variable not set")
 	}
@@ -37,22 +37,22 @@ func Connect () (*Database, error) {
 	}
 
 	if err := client.Ping(ctx, nil); err != nil {
-		return nil, fmt.Errorf("Failed to ping Mongo client, %w", err) 
+		return nil, fmt.Errorf("Failed to ping Mongo client, %w", err)
 	}
 
 	log.Printf("Successfully connected to MongoDB database, %s", dbName)
 
-	return &Database {
+	return &Database{
 		Client: client,
-		Db: client.Database(dbName),
+		Db:     client.Database(dbName),
 	}, nil
 }
 
-func (d *Database) GetCollection (name string) *mongo.Collection {
+func (d *Database) GetCollection(name string) *mongo.Collection {
 	return d.Db.Collection(name)
 }
 
-func (d *Database) Close (ctx context.Context) error {
+func (d *Database) Close(ctx context.Context) error {
 	if d.Client == nil {
 		return nil
 	}
