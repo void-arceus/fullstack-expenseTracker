@@ -3,9 +3,12 @@ package handlers
 import (
 	"backend/internal/models"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -76,7 +79,7 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
-	// search for the email
+	jwtSecret := os.Getenv("JWT_SECRET")
 	var loginCredentials LoginCredentials
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&loginCredentials); err != nil {
@@ -95,13 +98,29 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	claims := jwt.MapClaims{
+		"userId": data.ID.Hex(),
+		"exp":    time.Now().Add(time.Hour * 24).Unix(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString([]byte(jwtSecret))
+
+	if err != nil {
+		fmt.Println("JWT Failed, %w", err)
+		http.Error(w, "JWT Creation failed", http.StatusInternalServerError)
+		return
+	}
+
 	response := struct {
 		Status  bool        `json:"status"`
 		Message string      `json:"message"`
+		Token   string      `json:"token"`
 		Data    models.User `json:"data"`
 	}{
 		Status:  true,
 		Message: "Logged In Successfully",
+		Token:   tokenString,
 		Data:    *data,
 	}
 
