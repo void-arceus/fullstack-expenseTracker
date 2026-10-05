@@ -28,12 +28,17 @@ func main() {
 	userRepo := &repository.MongoUserRepository{
 		DB: database,
 	}
+	transactionRepo := &repository.MongoTransactionRepository{
+		DB: database,
+	}
 
 	handler := handlers.Handler{
-		UserRepo: userRepo,
+		UserRepo:        userRepo,
+		TransactionRepo: transactionRepo,
 	}
 
 	routes.RegisterUserRoutes(mux, handler)
+	routes.RegisterTransactionRoutes(mux, handler)
 
 	defer func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

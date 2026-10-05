@@ -7,7 +7,8 @@ import (
 )
 
 type Handler struct {
-	UserRepo repository.UserRepository
+	UserRepo        repository.UserRepository
+	TransactionRepo repository.TransactionRepository
 }
 
 func (h *Handler) Health(w http.ResponseWriter, r *http.Request) {

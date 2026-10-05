@@ -126,6 +126,6 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	encode := json.NewEncoder(w)
-	encode.SetIndent("", " ")
+	encode.SetIndent("", "    ")
 	encode.Encode(response)
 }
