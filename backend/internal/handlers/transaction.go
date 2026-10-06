@@ -82,3 +82,40 @@ func (h *Handler) AddTransaction(w http.ResponseWriter, r *http.Request) {
 	encoder.SetIndent("", "    ")
 	encoder.Encode(response)
 }
+
+func (h *Handler) GetTransactions(w http.ResponseWriter, r *http.Request) {
+	id := r.Context().Value(middleware.UserIdKey)
+	strUserId, ok := id.(string)
+
+	if !ok {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	userId, err := bson.ObjectIDFromHex(strUserId)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	transactions, err := h.TransactionRepo.GetTransactions(r.Context(), userId)
+	if err != nil {
+		http.Error(w, "Failed to get Transactions", http.StatusInternalServerError)
+		return
+	}
+
+	response := struct {
+		Status  bool
+		Message string
+		Data    []models.Transaction
+	}{
+		Status:  true,
+		Message: "Transactions fetched successfully",
+		Data:    transactions,
+	}
+
+	w.WriteHeader(http.StatusOK)
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", "    ")
+	encoder.Encode(&response)
+}

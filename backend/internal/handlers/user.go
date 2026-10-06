@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"go.mongodb.org/mongo-driver/v2/bson"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -48,6 +49,7 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 
 	user := models.User{
+		ID:        bson.NewObjectID(),
 		Username:  reqData.Username,
 		Email:     reqData.Email,
 		Password:  string(hashedPassword),
