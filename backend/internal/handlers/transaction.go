@@ -119,3 +119,59 @@ func (h *Handler) GetTransactions(w http.ResponseWriter, r *http.Request) {
 	encoder.SetIndent("", "    ")
 	encoder.Encode(&response)
 }
+
+func (h *Handler) UpdateTransaction(w http.ResponseWriter, r *http.Request) {
+	var reqData models.TransactionUpdate
+	id := r.PathValue("id")
+	transactionId, err := bson.ObjectIDFromHex(id)
+	if err != nil {
+		http.Error(w, "Invalid transaction ID", http.StatusBadRequest)
+		return
+	}
+
+	decodedUserId := r.Context().Value(middleware.UserIdKey)
+	strUserId, ok := decodedUserId.(string)
+
+	if !ok {
+		http.Error(w, "authentication context missing", http.StatusInternalServerError)
+		return
+	}
+
+	userId, err := bson.ObjectIDFromHex(strUserId)
+	if err != nil {
+		http.Error(w, "Invalid HEX format", http.StatusInternalServerError)
+		return
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&reqData); err != nil {
+		http.Error(w, "Invalid JSON data", http.StatusBadRequest)
+		return
+	}
+
+	data := make(map[string]any)
+	if reqData.TransactionName != nil {
+		data["transactionName"] = *reqData.TransactionName
+	}
+	if reqData.TransactionType != nil {
+		data["transactionType"] = *reqData.TransactionType
+	}
+	if reqData.TransactionAmount != nil {
+		data["transactionAmount"] = *reqData.TransactionAmount
+	}
+	if reqData.TransactionNote != nil {
+		data["transactionNote"] = *reqData.TransactionNote
+	}
+	if reqData.CategoryID != nil {
+		data["categoryId"] = *reqData.CategoryID
+	}
+	now := time.Now()
+	data["updatedAt"] = now
+
+	if err := h.TransactionRepo.UpdateTransaction(r.Context(), transactionId, userId, data); err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}

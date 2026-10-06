@@ -12,6 +12,7 @@ import (
 type TransactionRepository interface {
 	AddTransaction(ctx context.Context, data *models.Transaction) error
 	GetTransactions(ctx context.Context, id bson.ObjectID) ([]models.Transaction, error)
+	UpdateTransaction(ctx context.Context, transactionId bson.ObjectID, userId bson.ObjectID, data map[string]any) error
 }
 
 type MongoTransactionRepository struct {
@@ -39,4 +40,9 @@ func (r *MongoTransactionRepository) GetTransactions(ctx context.Context, id bso
 		return nil, fmt.Errorf("internal server error, %w", err)
 	}
 	return transactions, nil
+}
+
+func (r *MongoTransactionRepository) UpdateTransaction(ctx context.Context, transactionId, userId bson.ObjectID, data map[string]any) error {
+
+	return nil
 }

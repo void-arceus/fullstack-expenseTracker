@@ -18,3 +18,12 @@ type Transaction struct {
 	CreatedAt         time.Time     `bson:"createdAt" json:"createdAt"`
 	UpdatedAt         time.Time     `bson:"updatedAt" json:"updatedAt"`
 }
+
+type TransactionUpdate struct {
+	TransactionName   *string        `json:"transactionName"`
+	TransactionType   *string        `json:"transactionType"`
+	TransactionAmount *int64         `json:"transactionAmount"`
+	TransactionDate   *time.Time     `json:"transactionDate"`
+	TransactionNote   *string        `json:"note"`
+	CategoryID        *bson.ObjectID `json:"categoryId"`
+}
