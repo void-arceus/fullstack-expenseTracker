@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Homepage from "./pages/Homepage";
 import Login from "./features/auth/Login";
+import Register from "./features/auth/Register";
 
 interface ITheme {
     theme: "light" | "dark";
@@ -34,7 +35,11 @@ function App() {
                 handleToggleTheme={handleToggleTheme}
                 theme={theme.theme}
             /> */}
-            <Login handleToggleTheme={handleToggleTheme} theme={theme.theme} />
+            {/* <Login handleToggleTheme={handleToggleTheme} theme={theme.theme} /> */}
+            <Register
+                handleToggleTheme={handleToggleTheme}
+                theme={theme.theme}
+            />
         </>
     );
 }

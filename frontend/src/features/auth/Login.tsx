@@ -1,7 +1,6 @@
 import { IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
 import type { IThemeProp } from "../../pages/Homepage";
 import { useForm } from "react-hook-form";
-import { DiRequirejs } from "react-icons/di";
 import { HiOutlineMail } from "react-icons/hi";
 import { GoLock } from "react-icons/go";
 import { FaArrowRight } from "react-icons/fa6";
@@ -21,7 +20,7 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
 
     return (
         <main className="h-screen w-full relative bg-(--background)">
-            <form className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-xl border border-(--border) rounded-xl px-10 py-15 flex flex-col items-center gap-6 shadow-lg/5 bg-(--surface)">
+            <form className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-xl border border-(--border) rounded-xl px-10 flex flex-col items-center gap-6 shadow-lg/5 bg-(--surface)">
                 <div className="w-full flex items-center justify-end">
                     <button
                         type="button"
@@ -58,6 +57,7 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
                         Email
                     </label>
                     <input
+                        id="email"
                         {...register("email", { required: true })}
                         placeholder="you@example.com"
                         className="w-full py-4 pr-3 px-8 border border-(--border) focus:border-(--border-strong) rounded-lg outline-0 text-xs text-(--text-secondary) font-semibold"
@@ -80,6 +80,7 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
                         Password
                     </label>
                     <input
+                        id="password"
                         type="password"
                         {...register("password", { required: true })}
                         placeholder="Enter your password"
@@ -119,10 +120,28 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
                 <div className="w-full">
                     <button
                         type="button"
-                        className="w-full p-3.5 text-sm font-semibold text-[#ffffff] bg-(--accent) flex items-center justify-center gap-2 hover:cursor-pointer hover:bg-(--accent-hover) rounded-lg shadow-md/10 hover:shadow-md/20 active:scale-[0.98]"
+                        className="w-full p-3.5 text-sm font-semibold text-[#ffffff] bg-(--accent) flex items-center justify-center gap-2 hover:cursor-pointer hover:bg-(--accent-hover) rounded-lg shadow-md/10 hover:shadow-md/20 active:scale-[0.98] select-none"
                     >
                         Sign in <FaArrowRight size={15} />
                     </button>
+                </div>
+                <div className="w-full flex items-center justify-center gap-2">
+                    <hr className="w-full text-(--text-muted)" />
+                    <span className="text-xs font-semibold text-(--text-secondary)">
+                        OR
+                    </span>
+                    <hr className="w-full text-(--text-muted)" />
+                </div>
+                <div className="w-full flex items-center justify-center gap-2">
+                    <p className="text-xs font-semibold text-(--text-primary)">
+                        Don't have an account?
+                    </p>
+                    <a
+                        href="#"
+                        className="text-xs font-semibold hover:cursor-pointer text-(--accent) hover:text-(--accent-hover)"
+                    >
+                        Create one
+                    </a>
                 </div>
             </form>
         </main>
