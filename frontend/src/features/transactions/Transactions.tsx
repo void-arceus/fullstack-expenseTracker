@@ -1,3 +1,4 @@
+import CreateTransaction from "./CreateTransaction";
 import TransactionHeader from "./TransactionHeader";
 import TransactionsTable from "./TransactionsTable";
 
@@ -6,7 +7,7 @@ function Transactions() {
         <div className="pt-18 px-6 flex flex-col h-screen w-full">
             <TransactionHeader />
             <div className="w-full h-full">
-                <TransactionsTable />
+                <CreateTransaction />
             </div>
         </div>
     );
