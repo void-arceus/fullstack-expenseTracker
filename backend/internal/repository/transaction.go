@@ -12,7 +12,8 @@ import (
 type TransactionRepository interface {
 	AddTransaction(ctx context.Context, data *models.Transaction) error
 	GetTransactions(ctx context.Context, id bson.ObjectID) ([]models.Transaction, error)
-	UpdateTransaction(ctx context.Context, transactionId bson.ObjectID, userId bson.ObjectID, data map[string]any) error
+	UpdateTransaction(ctx context.Context, transactionId, userId bson.ObjectID, data map[string]any) error
+	DeleteTransaction(ctx context.Context, transactionId, userId bson.ObjectID) error
 }
 
 type MongoTransactionRepository struct {
@@ -43,6 +44,23 @@ func (r *MongoTransactionRepository) GetTransactions(ctx context.Context, id bso
 }
 
 func (r *MongoTransactionRepository) UpdateTransaction(ctx context.Context, transactionId, userId bson.ObjectID, data map[string]any) error {
+	collection := r.DB.GetCollection("transactions")
+	filter := bson.D{{Key: "_id", Value: transactionId}, {Key: "userId", Value: userId}}
+	update := bson.M{"$set": data}
+	_, err := collection.UpdateOne(ctx, filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to update transaction, %w", err)
+	}
+	return nil
+}
 
+func (r *MongoTransactionRepository) DeleteTransaction(ctx context.Context, transactionId, userId bson.ObjectID) error {
+	collection := r.DB.GetCollection("transactions")
+	filter := bson.D{{Key: "_id", Value: transactionId}, {Key: "userId", Value: userId}}
+
+	_, err := collection.DeleteOne(ctx, filter)
+	if err != nil {
+		return fmt.Errorf("failed to delete the transaction, %w", err)
+	}
 	return nil
 }

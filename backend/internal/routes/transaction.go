@@ -16,4 +16,7 @@ func RegisterTransactionRoutes(mux *http.ServeMux, handler handlers.Handler) {
 	mux.Handle("PATCH /transactions/{id}",
 		middleware.AuthMiddleware(http.HandlerFunc(handler.UpdateTransaction)),
 	)
+	mux.Handle("DELETE /transactions/{id}",
+		middleware.AuthMiddleware(http.HandlerFunc(handler.DeleteTransaction)),
+	)
 }

@@ -173,5 +173,52 @@ func (h *Handler) UpdateTransaction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	response := struct {
+		Status  bool
+		Message string
+	}{
+		Status:  true,
+		Message: "Transaction Deleted Successfully",
+	}
 	w.WriteHeader(http.StatusOK)
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", "    ")
+	encoder.Encode(&response)
+}
+
+func (h *Handler) DeleteTransaction(w http.ResponseWriter, r *http.Request) {
+	strTransactionId := r.PathValue("id")
+	transactionId, err := bson.ObjectIDFromHex(strTransactionId)
+	if err != nil {
+		http.Error(w, "invalid transaction id format", http.StatusBadRequest)
+		return
+	}
+
+	hexUserId := r.Context().Value(middleware.UserIdKey)
+	strUserId, ok := hexUserId.(string)
+	if !ok {
+		http.Error(w, "invalid user id format", http.StatusUnauthorized)
+		return
+	}
+	userId, err := bson.ObjectIDFromHex(strUserId)
+	if err != nil {
+		http.Error(w, "invalid user id format", http.StatusUnauthorized)
+		return
+	}
+	if err := h.TransactionRepo.DeleteTransaction(r.Context(), transactionId, userId); err != nil {
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	response := struct {
+		Status  bool
+		Message string
+	}{
+		Status:  true,
+		Message: "Transaction Deleted Successfully",
+	}
+	w.WriteHeader(http.StatusOK)
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", "    ")
+	encoder.Encode(&response)
 }
