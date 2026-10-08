@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import Homepage from "./pages/Homepage";
 import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
+import LandingPage from "./pages/LandingPage";
+import { Routes, Route } from "react-router-dom";
 
 interface ITheme {
     theme: "light" | "dark";
@@ -31,15 +33,44 @@ function App() {
 
     return (
         <>
-            {/* <Homepage
-                handleToggleTheme={handleToggleTheme}
-                theme={theme.theme}
-            /> */}
-            {/* <Login handleToggleTheme={handleToggleTheme} theme={theme.theme} /> */}
-            <Register
-                handleToggleTheme={handleToggleTheme}
-                theme={theme.theme}
-            />
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <LandingPage
+                            handleToggleTheme={handleToggleTheme}
+                            theme={theme.theme}
+                        />
+                    }
+                />
+                <Route
+                    path="/signin"
+                    element={
+                        <Login
+                            handleToggleTheme={handleToggleTheme}
+                            theme={theme.theme}
+                        />
+                    }
+                />
+                <Route
+                    path="/register"
+                    element={
+                        <Register
+                            handleToggleTheme={handleToggleTheme}
+                            theme={theme.theme}
+                        />
+                    }
+                />
+                <Route
+                    path="/homepage"
+                    element={
+                        <Homepage
+                            handleToggleTheme={handleToggleTheme}
+                            theme={theme.theme}
+                        />
+                    }
+                />
+            </Routes>
         </>
     );
 }

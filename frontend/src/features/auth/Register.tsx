@@ -4,6 +4,7 @@ import { IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
 import { HiOutlineMail } from "react-icons/hi";
 import { GoLock } from "react-icons/go";
 import { FaArrowRight, FaRegUser } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 interface IRegisterInput {
     username: string;
@@ -19,6 +20,7 @@ function Register({ handleToggleTheme, theme }: IThemeProp) {
         watch,
         formState: { errors },
     } = useForm<IRegisterInput>();
+    const navigate = useNavigate();
 
     return (
         <main className="h-screen w-full relative bg-(--background) px-2">
@@ -145,28 +147,7 @@ function Register({ handleToggleTheme, theme }: IThemeProp) {
                         </span>
                     )}
                 </div>
-                <div className="w-full flex items-center justify-between">
-                    <div className="flex items-center justify-center gap-2 flex-row-reverse">
-                        <label
-                            htmlFor="rememberme"
-                            className="text-xs text-(--text-secondary) font-semibold select-none hover:cursor-pointer"
-                        >
-                            Remember me
-                        </label>
-                        <input
-                            id="rememberme"
-                            type="checkbox"
-                            className="hover:cursor-pointer"
-                        />
-                    </div>
-                    <button
-                        type="button"
-                        className="text-xs font-semibold text-(--accent) hover:text-(--accent-hover) hover:cursor-pointer"
-                    >
-                        Forgot Password?
-                    </button>
-                </div>
-                <div className="w-full">
+                <div className="w-full mt-2">
                     <button
                         type="button"
                         className="w-full p-3.5 text-sm font-semibold text-[#ffffff] bg-(--accent) flex items-center justify-center gap-2 hover:cursor-pointer hover:bg-(--accent-hover) rounded-lg shadow-md/10 hover:shadow-md/20 active:scale-[0.98] select-none"
@@ -185,12 +166,13 @@ function Register({ handleToggleTheme, theme }: IThemeProp) {
                     <p className="text-xs font-semibold text-(--text-primary)">
                         Already have an account?
                     </p>
-                    <a
-                        href="#"
+                    <button
+                        type="button"
+                        onClick={() => navigate("/signin")}
                         className="text-xs font-semibold hover:cursor-pointer text-(--accent) hover:text-(--accent-hover)"
                     >
                         Sign in
-                    </a>
+                    </button>
                 </div>
             </form>
         </main>
