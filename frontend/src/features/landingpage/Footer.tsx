@@ -1,6 +1,8 @@
 import { FaArrowRightLong } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
+    const navigate = useNavigate();
     return (
         <div className="w-full bg-(--background)">
             <div className="w-full max-w-6xl mx-auto py-10 flex flex-col items-center justify-center gap-8">
@@ -15,10 +17,16 @@ function Footer() {
                         </p>
                     </div>
                     <div className="flex items-center justify-center gap-4">
-                        <button className="px-6 py-3 bg-(--accent) hover:bg-(--accent-hover) hover:cursor-pointer rounded-xl text-sm font-bold text-[#ffffff] flex items-center justify-center gap-2 active:scale-[0.96] transition transform-scale duration-100 ease-in-out">
+                        <button
+                            onClick={() => navigate("/register")}
+                            className="px-6 py-3 bg-(--accent) hover:bg-(--accent-hover) hover:cursor-pointer rounded-xl text-sm font-bold text-[#ffffff] flex items-center justify-center gap-2 active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                        >
                             Get Started <FaArrowRightLong size={18} />
                         </button>
-                        <button className="px-6 py-3 rounded-xl text-sm font-bold border border-(--border) hover:cursor-pointer hover:border-(--border-strong) text-(--text-primary) active:scale-[0.96] transition transform-scale duration-100 ease-in-out">
+                        <button
+                            onClick={() => navigate("/signin")}
+                            className="px-6 py-3 rounded-xl text-sm font-bold border border-(--border) hover:cursor-pointer hover:border-(--border-strong) text-(--text-primary) active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                        >
                             Sign In
                         </button>
                     </div>

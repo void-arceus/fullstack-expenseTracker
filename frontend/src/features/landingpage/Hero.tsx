@@ -1,8 +1,10 @@
 import { BsStars } from "react-icons/bs";
 import { HiArrowRight } from "react-icons/hi2";
 import { IoMdCheckmark } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 function Hero() {
+    const navigate = useNavigate();
     return (
         <div className="h-screen w-full bg-(--background)">
             <div className="h-full w-full max-w-6xl mx-auto flex flex-col items-start gap-2 bg-(--background) px-4 lg-px-0">
@@ -21,11 +23,17 @@ function Hero() {
                             financial habits - all in one place
                         </p>
                         <div className="flex items-center gap-4">
-                            <button className="px-5 py-3 bg-(--accent) hover:bg-(--accent-hover) hover:cursor-pointer rounded-xl text-sm text-[#ffffff] font-bold flex items-center justify-center gap-1 active:scale-[0.96] transition transform-scale duration-100 ease-in-out">
+                            <button
+                                onClick={() => navigate("/register")}
+                                className="px-5 py-3 bg-(--accent) hover:bg-(--accent-hover) hover:cursor-pointer rounded-xl text-sm text-[#ffffff] font-bold flex items-center justify-center gap-1 active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                            >
                                 Get Started
                                 <HiArrowRight size={18} />
                             </button>
-                            <button className="px-6 py-3 border border-(--border) hover:border-(--border-strong) hover:cursor-pointer text-sm font-bold text-(--text-secondary) rounded-xl active:scale-[0.96] transition transform-scale duration-100 ease-in-out">
+                            <button
+                                onClick={() => navigate("/signin")}
+                                className="px-6 py-3 border border-(--border) hover:border-(--border-strong) hover:cursor-pointer text-sm font-bold text-(--text-secondary) rounded-xl active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                            >
                                 Sign In
                             </button>
                         </div>

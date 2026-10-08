@@ -5,24 +5,36 @@ import { HiOutlineMail } from "react-icons/hi";
 import { GoLock } from "react-icons/go";
 import { FaArrowRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { HandleLogin } from "./auth.api";
 
-interface ILoginInput {
+export interface ILoginInput {
     email: string;
     password: string;
+    rememberMe: boolean;
 }
 
 function Login({ handleToggleTheme, theme }: IThemeProp) {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm<ILoginInput>();
     const navigate = useNavigate();
 
+    function onSubmit(data: ILoginInput) {
+        try {
+            HandleLogin(data);
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+
     return (
         <main className="h-screen w-full relative bg-(--background)">
-            <form className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-xl border border-(--border) rounded-xl px-10 py-10 flex flex-col items-center gap-6 shadow-lg/5 bg-(--surface)">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-xl border border-(--border) rounded-xl px-10 py-10 flex flex-col items-center gap-6 shadow-lg/5 bg-(--surface)"
+            >
                 <div className="w-full flex items-center justify-end">
                     <button
                         type="button"
@@ -60,7 +72,13 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
                     </label>
                     <input
                         id="email"
-                        {...register("email", { required: true })}
+                        {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                message: "Invalid email address",
+                            },
+                        })}
                         placeholder="you@example.com"
                         className="w-full py-4 pr-3 px-8 border border-(--border) focus:border-(--border-strong) rounded-lg outline-0 text-xs text-(--text-secondary) font-semibold"
                     />
@@ -84,7 +102,9 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
                     <input
                         id="password"
                         type="password"
-                        {...register("password", { required: true })}
+                        {...register("password", {
+                            required: "Password is required",
+                        })}
                         placeholder="Enter your password"
                         className="w-full py-4 pr-3 px-8 border border-(--border) focus:border-(--border-strong) rounded-lg outline-0 text-xs text-(--text-secondary) font-semibold"
                     />
@@ -109,6 +129,7 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
                         <input
                             id="rememberme"
                             type="checkbox"
+                            {...register("rememberMe")}
                             className="hover:cursor-pointer"
                         />
                     </div>
@@ -121,7 +142,7 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
                 </div>
                 <div className="w-full">
                     <button
-                        type="button"
+                        type="submit"
                         className="w-full p-3.5 text-sm font-semibold text-[#ffffff] bg-(--accent) flex items-center justify-center gap-2 hover:cursor-pointer hover:bg-(--accent-hover) rounded-lg shadow-md/10 hover:shadow-md/20 active:scale-[0.98] select-none"
                     >
                         Sign in <FaArrowRight size={15} />
