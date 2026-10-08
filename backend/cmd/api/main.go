@@ -3,6 +3,7 @@ package main
 import (
 	"backend/internal/db"
 	"backend/internal/handlers"
+	"backend/internal/middleware"
 	"backend/internal/repository"
 	"backend/internal/routes"
 	"context"
@@ -54,7 +55,7 @@ func main() {
 	log.Printf("Backend server booted and connected successfully!")
 
 	log.Printf("Server is running on PORT: 8080")
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	if err := http.ListenAndServe(":8080", middleware.CorsMiddleware(mux)); err != nil {
 		log.Fatalf("Failed to start the server, %v", err)
 	}
 
