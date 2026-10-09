@@ -7,7 +7,6 @@ import {
 } from "react";
 import type { ILoginInput } from "../features/auth/Login";
 import { GetCurrentUser, Login, Logout } from "../features/auth/auth.api";
-import { GiKingJuMask } from "react-icons/gi";
 
 interface IAuthProviderProps {
     children: ReactNode;

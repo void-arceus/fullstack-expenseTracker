@@ -5,8 +5,9 @@ import { HiOutlineMail } from "react-icons/hi";
 import { GoLock } from "react-icons/go";
 import { FaArrowRight, FaRegUser } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { RegisterUser } from "./auth.api";
 
-interface IRegisterInput {
+export interface IRegisterInput {
     username: string;
     email: string;
     password: string;
@@ -17,12 +18,21 @@ function Register({ handleToggleTheme, theme }: IThemeProp) {
     const {
         register,
         handleSubmit,
+        watch,
         formState: { errors },
     } = useForm<IRegisterInput>();
     const navigate = useNavigate();
 
     async function onSubmit(data: IRegisterInput) {
-        console.log("New user data:", data);
+        try {
+            await RegisterUser(data);
+            navigate("/signin");
+        } catch (error: any) {
+            console.error(
+                "Registration failed:",
+                error.response?.message || error.message,
+            );
+        }
     }
 
     return (
@@ -75,7 +85,9 @@ function Register({ handleToggleTheme, theme }: IThemeProp) {
                     </label>
                     <input
                         id="username"
-                        {...register("username", { required: true })}
+                        {...register("username", {
+                            required: "username is required",
+                        })}
                         placeholder="Choose a username"
                         className="w-full py-4 pr-3 px-8 border border-(--border) focus:border-(--border-strong) rounded-lg outline-0 text-xs text-(--text-secondary) font-semibold"
                     />
@@ -98,7 +110,13 @@ function Register({ handleToggleTheme, theme }: IThemeProp) {
                     </label>
                     <input
                         id="email"
-                        {...register("email", { required: true })}
+                        {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                message: "Invalid email address",
+                            },
+                        })}
                         placeholder="you@example.com"
                         className="w-full py-4 pr-3 px-8 border border-(--border) focus:border-(--border-strong) rounded-lg outline-0 text-xs text-(--text-secondary) font-semibold"
                     />
@@ -122,7 +140,25 @@ function Register({ handleToggleTheme, theme }: IThemeProp) {
                     <input
                         id="password"
                         type="password"
-                        {...register("password", { required: true })}
+                        {...register("password", {
+                            required: "Password is required",
+                            minLength: {
+                                value: 8,
+                                message:
+                                    "Password must be at least 8 characters long",
+                            },
+                            validate: {
+                                hasLowerCase: (value) =>
+                                    /[a-z]/.test(value) ||
+                                    "Password must contain at least one lowercase character",
+                                hasUpperCase: (value) =>
+                                    /[A-Z]/.test(value) ||
+                                    "Password must contain at least one uppercase character",
+                                hasSpecialChar: (value) =>
+                                    /[!@#$%^&*(),.?":{}|<>]/.test(value) ||
+                                    "Password must contain at least one special character",
+                            },
+                        })}
                         placeholder="Enter your password"
                         className="w-full py-4 pr-3 px-8 border border-(--border) focus:border-(--border-strong) rounded-lg outline-0 text-xs text-(--text-secondary) font-semibold"
                     />
@@ -146,7 +182,14 @@ function Register({ handleToggleTheme, theme }: IThemeProp) {
                     <input
                         id="confirmPassword"
                         type="password"
-                        {...register("confirmPassword", { required: true })}
+                        {...register("confirmPassword", {
+                            required: "Confirm Password is required",
+                            validate: (val) => {
+                                if (watch("password") !== val) {
+                                    return "Your passwords do not match";
+                                }
+                            },
+                        })}
                         placeholder="Confirm your password"
                         className="w-full py-4 pr-3 px-8 border border-(--border) focus:border-(--border-strong) rounded-lg outline-0 text-xs text-(--text-secondary) font-semibold"
                     />
