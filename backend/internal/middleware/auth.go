@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -17,15 +16,15 @@ const UserIdKey contextKey = "userId"
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		jwtSecret := os.Getenv("JWT_SECRET")
-		parts := strings.Split(r.Header.Get("Authorization"), " ")
-		var tokenString string
 
-		if len(parts) == 2 && parts[0] == "Bearer" {
-			tokenString = parts[1]
-		} else {
-			http.Error(w, "Invalid or Bearer Token not provided", http.StatusUnauthorized)
+		cookie, err := r.Cookie("jwt_token")
+		if err != nil {
+			http.Error(w, "Unauthorized, Invalid Token", http.StatusUnauthorized)
 			return
 		}
+
+		tokenString := cookie.Value
+
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 			if token.Method != jwt.SigningMethodHS256 {
 				return nil, fmt.Errorf("unexpected signing method")

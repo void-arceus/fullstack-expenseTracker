@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"backend/internal/middleware"
 	"backend/internal/models"
 	"encoding/json"
 	"fmt"
@@ -19,8 +20,9 @@ type UserResponse struct {
 }
 
 type LoginCredentials struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+	RememberMe bool   `json:"rememberMe"`
 }
 
 func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
@@ -89,6 +91,16 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var sessionDuration time.Duration
+	if loginCredentials.RememberMe {
+		sessionDuration = 24 * time.Hour * 30
+	} else {
+		sessionDuration = 24 * time.Hour * 1
+	}
+
+	maxAgeSeconds := int(sessionDuration.Seconds())
+	expiresTimeStamp := time.Now().Add(sessionDuration)
+
 	data, err := h.UserRepo.GetUserByEmail(r.Context(), loginCredentials.Email)
 	if err != nil {
 		http.Error(w, "User not found", http.StatusNotFound)
@@ -102,7 +114,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 
 	claims := jwt.MapClaims{
 		"userId": data.ID.Hex(),
-		"exp":    time.Now().Add(time.Hour * 24).Unix(),
+		"exp":    expiresTimeStamp.Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -114,15 +126,24 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// set http cookie
+	http.SetCookie(w, &http.Cookie{
+		Name:     "jwt_token",
+		Value:    tokenString,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		MaxAge:   maxAgeSeconds,
+		Expires:  expiresTimeStamp,
+	})
+
 	response := struct {
 		Status  bool        `json:"status"`
 		Message string      `json:"message"`
-		Token   string      `json:"token"`
 		Data    models.User `json:"data"`
 	}{
 		Status:  true,
 		Message: "Logged In Successfully",
-		Token:   tokenString,
 		Data:    *data,
 	}
 
@@ -130,4 +151,54 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	encode := json.NewEncoder(w)
 	encode.SetIndent("", "    ")
 	encode.Encode(response)
+}
+
+func (h *Handler) GetCurrentUser(w http.ResponseWriter, r *http.Request) {
+	id := r.Context().Value(middleware.UserIdKey)
+	strUserId, ok := id.(string)
+	if !ok {
+		http.Error(w, "invalid user id", http.StatusInternalServerError)
+		return
+	}
+
+	userId, err := bson.ObjectIDFromHex(strUserId)
+	if err != nil {
+		http.Error(w, "invalid user id format", http.StatusInternalServerError)
+		return
+	}
+
+	data, err := h.UserRepo.GetUserById(r.Context(), userId)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	response := struct {
+		Status  bool        `json:"status"`
+		Message string      `json:"message"`
+		Data    models.User `json:"data"`
+	}{
+		Status:  true,
+		Message: "User is logged in",
+		Data:    *data,
+	}
+
+	w.WriteHeader(http.StatusOK)
+	encode := json.NewEncoder(w)
+	encode.SetIndent("", "    ")
+	encode.Encode(response)
+}
+
+func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
+	expiredCookie := &http.Cookie{
+		Name:     "jwt_token",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   -1,
+		Expires:  time.Unix(0, 0),
+		HttpOnly: true,
+		Secure:   true,
+	}
+	http.SetCookie(w, expiredCookie)
+	w.WriteHeader(http.StatusOK)
 }

@@ -13,6 +13,7 @@ import (
 type UserRepository interface {
 	CreateUser(ctx context.Context, user *models.User) error
 	GetUserByEmail(ctx context.Context, email string) (*models.User, error)
+	GetUserById(ctx context.Context, id bson.ObjectID) (*models.User, error)
 }
 
 type MongoUserRepository struct {
@@ -61,6 +62,15 @@ func (r *MongoUserRepository) GetUserByEmail(ctx context.Context, email string) 
 	collection := r.DB.GetCollection("users")
 	if err := collection.FindOne(ctx, bson.D{{Key: "email", Value: email}}).Decode(&user); err != nil {
 		return nil, fmt.Errorf("User not found!")
+	}
+	return &user, nil
+}
+
+func (r *MongoUserRepository) GetUserById(ctx context.Context, id bson.ObjectID) (*models.User, error) {
+	var user models.User
+	collection := r.DB.GetCollection("users")
+	if err := collection.FindOne(ctx, bson.D{{Key: "_id", Value: id}}).Decode(&user); err != nil {
+		return nil, fmt.Errorf("User not found")
 	}
 	return &user, nil
 }
