@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import type { IThemeProp } from "../../pages/Homepage";
+import type { IThemeProp } from "../../pages/UserDashboard";
 import { IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
 import { HiOutlineMail } from "react-icons/hi";
 import { GoLock } from "react-icons/go";
@@ -17,15 +17,28 @@ function Register({ handleToggleTheme, theme }: IThemeProp) {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm<IRegisterInput>();
     const navigate = useNavigate();
 
+    async function onSubmit(data: IRegisterInput) {
+        console.log("New user data:", data);
+    }
+
     return (
         <main className="h-screen w-full relative bg-(--background) px-2">
-            <form className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-xl border border-(--border) rounded-xl px-5 sm:px-10 py-6 flex flex-col items-center gap-4 shadow-lg/5 bg-(--surface)">
-                <div className="w-full flex items-center justify-end">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-xl border border-(--border) rounded-xl px-5 sm:px-10 py-6 flex flex-col items-center gap-4 shadow-lg/5 bg-(--surface)"
+            >
+                <div className="w-full flex items-center justify-between">
+                    <button
+                        type="button"
+                        onClick={() => navigate("/")}
+                        className="text-md font-extrabold text-(--accent) hover:cursor-pointer hover:text-(--accent-hover) select-none"
+                    >
+                        ExpenseTracker
+                    </button>
                     <button
                         type="button"
                         onClick={handleToggleTheme}
@@ -149,7 +162,7 @@ function Register({ handleToggleTheme, theme }: IThemeProp) {
                 </div>
                 <div className="w-full mt-2">
                     <button
-                        type="button"
+                        type="submit"
                         className="w-full p-3.5 text-sm font-semibold text-[#ffffff] bg-(--accent) flex items-center justify-center gap-2 hover:cursor-pointer hover:bg-(--accent-hover) rounded-lg shadow-md/10 hover:shadow-md/20 active:scale-[0.98] select-none"
                     >
                         Register <FaArrowRight size={15} />

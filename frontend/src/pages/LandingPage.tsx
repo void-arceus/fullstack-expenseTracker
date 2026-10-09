@@ -1,6 +1,6 @@
 import LandingPageNavbar from "../features/landingpage/LandingPageNavbar";
 import Hero from "../features/landingpage/Hero";
-import type { IThemeProp } from "./Homepage";
+import type { IThemeProp } from "./UserDashboard";
 import Features from "../features/landingpage/Features";
 import Footer from "../features/landingpage/Footer";
 

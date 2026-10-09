@@ -5,6 +5,8 @@ import { AiOutlineTransaction } from "react-icons/ai";
 import { MdLogout, MdOutlineAnalytics } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaSackDollar } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 interface ISidebarProps {
     handleSetMenu: (val: string) => void;
@@ -12,13 +14,28 @@ interface ISidebarProps {
 }
 
 function Sidebar({ handleSetMenu, menu }: ISidebarProps) {
+    const navigate = useNavigate();
+    const { user, HandleLogout } = useAuth();
+
+    async function Logout() {
+        try {
+            await HandleLogout();
+            navigate("/");
+        } catch (error: any) {
+            throw new Error(error);
+        }
+    }
+
     return (
         <div className="relative bg-(--surface) h-full min-w-3xs w-3xs border-r border-(--border) p-2 flex flex-col items-start justify-start gap-2">
             <div className="w-full flex items-center justify-start gap-2 p-2 text-(--text-primary) mb-2 hover:cursor-pointer">
                 <GiExpense size={20} />
-                <h1 className="text-md font-bold select-none">
+                <button
+                    onClick={() => navigate("/")}
+                    className="text-md font-bold select-none"
+                >
                     ExpenseTracker
-                </h1>
+                </button>
             </div>
             <div className="w-full flex flex-col items-start justify-start gap-0.5 pb-4 border-b border-(--border)">
                 <button
@@ -70,18 +87,21 @@ function Sidebar({ handleSetMenu, menu }: ISidebarProps) {
                 <div className="w-full border-t border-(--border) flex items-center justify-between py-6">
                     <div className="w-full flex items-center justify-start gap-4">
                         <div className="h-10 w-10 flex items-center justify-center rounded-full text-md font-extrabold text-(--accent) bg-(--accent-soft)">
-                            A
+                            {user?.username[0].toUpperCase()}
                         </div>
                         <div className="flex flex-col items-start justify-start">
                             <h1 className="text-xs font-bold text-(--text-primary)">
-                                Arceus
+                                {user?.username}
                             </h1>
                             <p className="text-xs font-medium text-(--text-muted)">
-                                arceus@gmail.com
+                                {user?.email}
                             </p>
                         </div>
                     </div>
-                    <button className="hover:cursor-pointer text-(--text-primary)">
+                    <button
+                        onClick={Logout}
+                        className="hover:cursor-pointer text-(--text-primary)"
+                    >
                         <MdLogout size={20} />
                     </button>
                 </div>

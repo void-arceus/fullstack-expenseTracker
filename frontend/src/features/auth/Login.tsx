@@ -1,11 +1,11 @@
 import { IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
-import type { IThemeProp } from "../../pages/Homepage";
+import type { IThemeProp } from "../../pages/UserDashboard";
 import { useForm } from "react-hook-form";
 import { HiOutlineMail } from "react-icons/hi";
 import { GoLock } from "react-icons/go";
 import { FaArrowRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import { HandleLogin } from "./auth.api";
+import { useAuth } from "../../context/AuthContext";
 
 export interface ILoginInput {
     email: string;
@@ -20,10 +20,12 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
         formState: { errors },
     } = useForm<ILoginInput>();
     const navigate = useNavigate();
+    const { HandleLogin } = useAuth();
 
-    function onSubmit(data: ILoginInput) {
+    async function onSubmit(data: ILoginInput) {
         try {
-            HandleLogin(data);
+            const res = await HandleLogin(data);
+            if (res) navigate("/userDashboard");
         } catch (error: any) {
             throw new Error(error.message);
         }
@@ -35,7 +37,14 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
                 onSubmit={handleSubmit(onSubmit)}
                 className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-xl border border-(--border) rounded-xl px-10 py-10 flex flex-col items-center gap-6 shadow-lg/5 bg-(--surface)"
             >
-                <div className="w-full flex items-center justify-end">
+                <div className="w-full flex items-center justify-between">
+                    <button
+                        type="button"
+                        onClick={() => navigate("/")}
+                        className="text-md font-extrabold text-(--accent) hover:cursor-pointer hover:text-(--accent-hover) select-none"
+                    >
+                        ExpenseTracker
+                    </button>
                     <button
                         type="button"
                         onClick={handleToggleTheme}

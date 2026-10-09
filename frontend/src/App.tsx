@@ -1,9 +1,11 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
-import Homepage from "./pages/Homepage";
+import UserDashboard from "./pages/UserDashboard";
 import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
 import LandingPage from "./pages/LandingPage";
 import { Routes, Route } from "react-router-dom";
+axios.defaults.withCredentials = true;
 
 interface ITheme {
     theme: "light" | "dark";
@@ -62,9 +64,9 @@ function App() {
                     }
                 />
                 <Route
-                    path="/homepage"
+                    path="/userDashboard"
                     element={
-                        <Homepage
+                        <UserDashboard
                             handleToggleTheme={handleToggleTheme}
                             theme={theme.theme}
                         />

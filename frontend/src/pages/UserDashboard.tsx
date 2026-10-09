@@ -32,7 +32,7 @@ function displayView(menu: string) {
     }
 }
 
-function Homepage({ handleToggleTheme, theme }: IThemeProp) {
+function UserDashboard({ handleToggleTheme, theme }: IThemeProp) {
     const [menu, setMenu] = useState<string>("dashboard");
 
     function handleSetMenu(val: string) {
@@ -50,4 +50,4 @@ function Homepage({ handleToggleTheme, theme }: IThemeProp) {
     );
 }
 
-export default Homepage;
+export default UserDashboard;
