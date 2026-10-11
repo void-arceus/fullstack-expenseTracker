@@ -2,121 +2,122 @@
 @import "tailwindcss";
 
 body {
-    font-family: "Manrope", sans-serif;
+  position: relative;
+  font-family: "Manrope", sans-serif;
 }
 
 /* hidden scrollbar */
 * {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 *::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 :root,
 .light {
-    --background: #f8fafc;
-    --surface: #ffffff;
-    --surface-hover: #f1f5f9;
-    --text-primary: #111827;
-    --text-secondary: #64748b;
-    --text-muted: #94a3b8;
-    --border: #e2e8f0;
-    --border-strong: #cbd5e1;
-    --accent: #2563eb;
-    --accent-hover: #1d4ed8;
-    --accent-soft: #eff6ff;
-    --success: #10b981;
-    --success-soft: #ecfdf5;
-    --danger: #ef4444;
-    --danger-soft: #fef2f2;
-    --info: #2563eb;
-    --info-soft: #eff6ff;
-    --warning: #f59e0b;
-    --theme-toggle-bg: #111827;
-    --theme-toggle-hover: #1f2937;
-    --theme-toggle-icon: #f8fafc;
-    --chart-blue: #3b82f6;
-    --chart-purple: #8b5cf6;
-    --chart-green: #34d399;
-    --chart-yellow: #fbbf24;
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --text-primary: #111827;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: #eff6ff;
+  --success: #10b981;
+  --success-soft: #ecfdf5;
+  --danger: #ef4444;
+  --danger-soft: #fef2f2;
+  --info: #2563eb;
+  --info-soft: #eff6ff;
+  --warning: #f59e0b;
+  --theme-toggle-bg: #111827;
+  --theme-toggle-hover: #1f2937;
+  --theme-toggle-icon: #f8fafc;
+  --chart-blue: #3b82f6;
+  --chart-purple: #8b5cf6;
+  --chart-green: #34d399;
+  --chart-yellow: #fbbf24;
 
-    /* category */
-    /* Food */
-    --category-food-bg: #fff4e5;
-    --category-food-text: #c2410c;
+  /* category */
+  /* Food */
+  --category-food-bg: #fff4e5;
+  --category-food-text: #c2410c;
 
-    /* Bills */
-    --category-bills-bg: #ede9fe;
-    --category-bills-text: #6d28d9;
+  /* Bills */
+  --category-bills-bg: #ede9fe;
+  --category-bills-text: #6d28d9;
 
-    /* Transport */
-    --category-transport-bg: #e0f2fe;
-    --category-transport-text: #0369a1;
+  /* Transport */
+  --category-transport-bg: #e0f2fe;
+  --category-transport-text: #0369a1;
 
-    /* Shopping */
-    --category-shopping-bg: #fce7f3;
-    --category-shopping-text: #be185d;
+  /* Shopping */
+  --category-shopping-bg: #fce7f3;
+  --category-shopping-text: #be185d;
 
-    /* Entertainment */
-    --category-entertainment-bg: #ecfccb;
-    --category-entertainment-text: #4d7c0f;
+  /* Entertainment */
+  --category-entertainment-bg: #ecfccb;
+  --category-entertainment-text: #4d7c0f;
 
-    /* Other */
-    --category-other-bg: #f1f5f9;
-    --category-other-text: #475569;
+  /* Other */
+  --category-other-bg: #f1f5f9;
+  --category-other-text: #475569;
 }
 .dark {
-    --background: #101418;
-    --surface: #161b21;
-    --surface-hover: #1d232b;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --border: #29313a;
-    --border-strong: #374151;
-    --accent: #3b82f6;
-    --accent-hover: #60a5fa;
-    --accent-soft: #172554;
-    --success: #34d399;
-    --success-soft: #064e3b;
-    --danger: #fb7185;
-    --danger-soft: #4c0519;
-    --info: #60a5fa;
-    --info-soft: #172554;
-    --warning: #fbbf24;
-    --theme-toggle-bg: #f8fafc;
-    --theme-toggle-hover: #e2e8f0;
-    --theme-toggle-icon: #111827;
-    --chart-blue: #3b82f6;
-    --chart-purple: #8b5cf6;
-    --chart-green: #34d399;
-    --chart-yellow: #fbbf24;
+  --background: #101418;
+  --surface: #161b21;
+  --surface-hover: #1d232b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #29313a;
+  --border-strong: #374151;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-soft: #172554;
+  --success: #34d399;
+  --success-soft: #064e3b;
+  --danger: #fb7185;
+  --danger-soft: #4c0519;
+  --info: #60a5fa;
+  --info-soft: #172554;
+  --warning: #fbbf24;
+  --theme-toggle-bg: #f8fafc;
+  --theme-toggle-hover: #e2e8f0;
+  --theme-toggle-icon: #111827;
+  --chart-blue: #3b82f6;
+  --chart-purple: #8b5cf6;
+  --chart-green: #34d399;
+  --chart-yellow: #fbbf24;
 
-    /* category */
-    /* Food */
-    --category-food-bg: #422006;
-    --category-food-text: #fdba74;
+  /* category */
+  /* Food */
+  --category-food-bg: #422006;
+  --category-food-text: #fdba74;
 
-    /* Bills */
-    --category-bills-bg: #2e1065;
-    --category-bills-text: #c4b5fd;
+  /* Bills */
+  --category-bills-bg: #2e1065;
+  --category-bills-text: #c4b5fd;
 
-    /* Transport */
-    --category-transport-bg: #082f49;
-    --category-transport-text: #7dd3fc;
+  /* Transport */
+  --category-transport-bg: #082f49;
+  --category-transport-text: #7dd3fc;
 
-    /* Shopping */
-    --category-shopping-bg: #500724;
-    --category-shopping-text: #f9a8d4;
+  /* Shopping */
+  --category-shopping-bg: #500724;
+  --category-shopping-text: #f9a8d4;
 
-    /* Entertainment */
-    --category-entertainment-bg: #1a2e05;
-    --category-entertainment-text: #bef264;
+  /* Entertainment */
+  --category-entertainment-bg: #1a2e05;
+  --category-entertainment-text: #bef264;
 
-    /* Other */
-    --category-other-bg: #1e293b;
-    --category-other-text: #cbd5e1;
+  /* Other */
+  --category-other-bg: #1e293b;
+  --category-other-text: #cbd5e1;
 }
