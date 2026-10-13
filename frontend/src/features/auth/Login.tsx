@@ -28,7 +28,7 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
     try {
       const res = await HandleLogin(data);
       if (res) navigate("/userDashboard");
-      displayToast("success", "Logged in");
+      displayToast("success", "Logged in Successfully");
     } catch (error: any) {
       throw new Error(error.message);
     }
