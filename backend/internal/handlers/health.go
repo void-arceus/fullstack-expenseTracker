@@ -9,6 +9,7 @@ import (
 type Handler struct {
 	UserRepo        repository.UserRepository
 	TransactionRepo repository.TransactionRepository
+	CategoryRepo    repository.MongoCategoryRepository
 }
 
 func (h *Handler) Health(w http.ResponseWriter, r *http.Request) {

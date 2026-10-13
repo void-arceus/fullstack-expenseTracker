@@ -1,1 +1,13 @@
 package routes
+
+import (
+	"backend/internal/handlers"
+	"backend/internal/middleware"
+	"net/http"
+)
+
+func RegisterCategoryRoutes(mux *http.ServeMux, h handlers.Handler) {
+	mux.Handle("GET /categories/{id}",
+		middleware.AuthMiddleware(http.HandlerFunc(h.GetCategories)),
+	)
+}
