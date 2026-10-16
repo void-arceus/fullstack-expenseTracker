@@ -5,6 +5,7 @@ import (
 	"backend/internal/models"
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"time"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -22,6 +23,7 @@ type TransactionCredential struct {
 func (h *Handler) AddTransaction(w http.ResponseWriter, r *http.Request) {
 	var reqData TransactionCredential
 	decoder := json.NewDecoder(r.Body)
+
 	if err := decoder.Decode(&reqData); err != nil {
 		http.Error(w, "Invalid JSON Data", http.StatusBadRequest)
 		return
@@ -98,7 +100,42 @@ func (h *Handler) GetTransactions(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	transactions, err := h.TransactionRepo.GetTransactions(r.Context(), userId)
+	pageStr := r.URL.Query().Get("page")
+	limitStr := r.URL.Query().Get("limit")
+	filter := r.URL.Query().Get("type")
+	sortBy := r.URL.Query().Get("sortBy")
+
+	// validate these query params first (pending...)
+
+	if pageStr == "" {
+		pageStr = "1"
+	}
+
+	if limitStr == "" {
+		limitStr = "10"
+	}
+
+	if filter == "" {
+		filter = "all"
+	}
+
+	if sortBy == "" {
+		sortBy = "desc"
+	}
+
+	page, err := strconv.ParseInt(pageStr, 10, 64)
+	if err != nil {
+		http.Error(w, "Invailid page query param value", http.StatusBadRequest)
+		return
+	}
+
+	limit, err := strconv.ParseInt(limitStr, 10, 64)
+	if err != nil {
+		http.Error(w, "Invalid limit query param value", http.StatusBadRequest)
+		return
+	}
+
+	transactions, err := h.TransactionRepo.GetTransactions(r.Context(), userId, page, limit, filter, sortBy)
 	if err != nil {
 		http.Error(w, "Failed to get Transactions", http.StatusInternalServerError)
 		return

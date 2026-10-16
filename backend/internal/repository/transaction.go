@@ -7,11 +7,12 @@ import (
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 type TransactionRepository interface {
 	AddTransaction(ctx context.Context, data *models.Transaction) error
-	GetTransactions(ctx context.Context, id bson.ObjectID) ([]models.Transaction, error)
+	GetTransactions(ctx context.Context, id bson.ObjectID, page, limit int64, filter, sortBy string) ([]models.Transaction, error)
 	UpdateTransaction(ctx context.Context, transactionId, userId bson.ObjectID, data map[string]any) error
 	DeleteTransaction(ctx context.Context, transactionId, userId bson.ObjectID) error
 }
@@ -29,10 +30,32 @@ func (r *MongoTransactionRepository) AddTransaction(ctx context.Context, data *m
 	return nil
 }
 
-func (r *MongoTransactionRepository) GetTransactions(ctx context.Context, id bson.ObjectID) ([]models.Transaction, error) {
+func (r *MongoTransactionRepository) GetTransactions(ctx context.Context, id bson.ObjectID, page, limit int64, filter, sortBy string) ([]models.Transaction, error) {
 	var transactions []models.Transaction
 	collection := r.DB.GetCollection("transactions")
-	cursor, err := collection.Find(ctx, bson.D{{Key: "userId", Value: id}})
+
+	var sortValue int64
+
+	if sortBy == "asc" {
+		sortValue = 1
+	} else {
+		sortValue = -1
+	}
+
+	filters := bson.D{
+		{Key: "userId", Value: id},
+	}
+
+	if filter != "all" {
+		filters = append(filters, bson.E{
+			Key: "transactionType", Value: filter,
+		})
+	}
+
+	sort := bson.D{{Key: "createdAt", Value: sortValue}}
+	skip := (page - 1) * limit
+	opts := options.Find().SetSort(sort).SetSkip(skip).SetLimit(limit)
+	cursor, err := collection.Find(ctx, filters, opts)
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve the transactins data, %w", err)
 	}
