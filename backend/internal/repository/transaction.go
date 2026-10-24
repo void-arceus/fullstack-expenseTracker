@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
-	"go.mongodb.org/mongo-driver/v2/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
 type TransactionRepository interface {
@@ -54,11 +54,29 @@ func (r *MongoTransactionRepository) GetTransactions(ctx context.Context, id bso
 
 	sort := bson.D{{Key: "createdAt", Value: sortValue}}
 	skip := (page - 1) * limit
-	opts := options.Find().SetSort(sort).SetSkip(skip).SetLimit(limit)
-	cursor, err := collection.Find(ctx, filters, opts)
+
+	pipeline := mongo.Pipeline{
+		bson.D{{Key: "$match", Value: filters}},
+		bson.D{{Key: "$lookup", Value: bson.D{
+			{Key: "from", Value: "categories"},
+			{Key: "localField", Value: "categoryId"},
+			{Key: "foreignField", Value: "_id"},
+			{Key: "as", Value: "category"},
+		}}},
+		bson.D{{Key: "$unwind", Value: bson.D{
+			{Key: "path", Value: "$category"},
+			{Key: "preserveNullAndEmptyArrays", Value: true},
+		}}},
+		bson.D{{Key: "$sort", Value: sort}},
+		bson.D{{Key: "$skip", Value: skip}},
+		bson.D{{Key: "$limit", Value: limit}},
+	}
+
+	cursor, err := collection.Aggregate(ctx, pipeline)
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve the transactins data, %w", err)
 	}
+	defer cursor.Close(ctx)
 
 	if err := cursor.All(ctx, &transactions); err != nil {
 		return nil, fmt.Errorf("internal server error, %w", err)

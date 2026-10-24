@@ -60,7 +60,7 @@ function Sidebar({ handleSetMenu, menu }: ISidebarProps) {
           onClick={() => handleSetMenu("budget")}
           className={`${menu === "budget" ? "bg-(--accent-soft) text-(--accent)" : "text-(--text-primary)"} w-full flex items-center justify-start gap-4 px-2 py-3 hover:bg-(--accent-soft) hover:cursor-pointer rounded-md hover:text-(--accent-hover`}
         >
-          <FaSackDollar size={16} />
+          <FaSackDollar size={20} />
           <p className="text-xs font-bold select-none">Budget</p>
         </button>
         <button

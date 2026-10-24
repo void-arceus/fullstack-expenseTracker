@@ -4,6 +4,7 @@ import (
 	"backend/internal/middleware"
 	"backend/internal/models"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -102,10 +103,17 @@ func (h *Handler) GetTransactions(w http.ResponseWriter, r *http.Request) {
 
 	pageStr := r.URL.Query().Get("page")
 	limitStr := r.URL.Query().Get("limit")
-	filter := r.URL.Query().Get("type")
+	filter := r.URL.Query().Get("filter")
 	sortBy := r.URL.Query().Get("sortBy")
 
-	// validate these query params first (pending...)
+	if filter == "" {
+		filter = "all"
+	}
+
+	if filter != "all" && filter != "income" && filter != "expense" {
+		http.Error(w, "Invalid filter value", http.StatusBadRequest)
+		return
+	}
 
 	if pageStr == "" {
 		pageStr = "1"
@@ -137,6 +145,7 @@ func (h *Handler) GetTransactions(w http.ResponseWriter, r *http.Request) {
 
 	transactions, err := h.TransactionRepo.GetTransactions(r.Context(), userId, page, limit, filter, sortBy)
 	if err != nil {
+		fmt.Println("Error: %w", err)
 		http.Error(w, "Failed to get Transactions", http.StatusInternalServerError)
 		return
 	}

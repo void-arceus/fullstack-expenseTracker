@@ -37,13 +37,11 @@ export function AuthProvider({ children }: IAuthProviderProps) {
 
   useEffect(() => {
     HandleGetCurrentUser();
-    console.log("Context isLoggedIn:", isLoggedIn);
   }, []);
 
   async function HandleGetCurrentUser() {
     try {
       const res = await GetCurrentUser();
-      console.log("Current user result:", res);
       setIsLoggedIn(true);
       setUser(res.data);
     } catch (error: any) {

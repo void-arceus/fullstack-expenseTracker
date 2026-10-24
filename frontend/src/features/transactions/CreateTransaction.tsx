@@ -7,12 +7,17 @@ import { useToast } from "../../context/ToastContext";
 import { AddTransaction } from "../../api/transactions";
 
 export interface ITransactionInput {
+  id?: string;
+  userId?: string;
   transactionName: string;
   transactionAmount: number;
   transactionType: "expense" | "income";
   transactionDate: string;
   transactionNote?: string;
   categoryId: string;
+  createdAt?: string;
+  updatedAt?: string;
+  category?: ICategories;
 }
 
 interface ICategories {

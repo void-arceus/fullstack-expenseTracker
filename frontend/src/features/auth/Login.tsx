@@ -26,8 +26,8 @@ function Login({ handleToggleTheme, theme }: IThemeProp) {
 
   async function onSubmit(data: ILoginInput) {
     try {
-      const res = await HandleLogin(data);
-      if (res) navigate("/userDashboard");
+      await HandleLogin(data);
+      navigate("/userDashboard");
       displayToast("success", "Logged in Successfully");
     } catch (error: any) {
       throw new Error(error.message);

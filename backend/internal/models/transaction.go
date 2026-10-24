@@ -17,6 +17,7 @@ type Transaction struct {
 	CategoryID        bson.ObjectID `bson:"categoryId" json:"categoryId"`
 	CreatedAt         time.Time     `bson:"createdAt" json:"createdAt"`
 	UpdatedAt         time.Time     `bson:"updatedAt" json:"updatedAt"`
+	Category          Category      `bson:"category" json:"category"`
 }
 
 type TransactionUpdate struct {
