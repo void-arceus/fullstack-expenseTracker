@@ -1,5 +1,12 @@
 import { FaPlus } from "react-icons/fa6";
-function TransactionHeader() {
+
+interface ITransactionHeaderProps {
+  handleShowTransactionForm: (val: boolean) => void;
+}
+
+function TransactionHeader({
+  handleShowTransactionForm,
+}: ITransactionHeaderProps) {
   return (
     <div className="py-4 w-full flex items-center justify-between">
       <div className="flex flex-col items-start justify-start">
@@ -10,7 +17,11 @@ function TransactionHeader() {
           View and manage your all transactions
         </p>
       </div>
-      <button className="text-xs font-semibold bg-(--accent) hover:bg-(--accent-hover) flex items-center gap-2 hover:cursor-pointer px-3 py-2 rounded-md text-[#ffffff] select-none shadow-sm hover:shadow-lg active:scale-[0.98]">
+      <button
+        type="button"
+        onClick={() => handleShowTransactionForm(true)}
+        className="text-xs font-semibold bg-(--accent) hover:bg-(--accent-hover) flex items-center gap-2 hover:cursor-pointer px-3 py-2 rounded-md text-[#ffffff] select-none shadow-sm hover:shadow-lg active:scale-[0.98]"
+      >
         <FaPlus size={12} /> Add Transaction
       </button>
     </div>

@@ -56,8 +56,13 @@ function RecentTransactions() {
                     <div className="w-full flex flex-col gap-1">
                       <h1 className="text-xs font-bold">{t.transactionName}</h1>
                       <p className="text-xs text-(--text-secondary) font-semibold">
-                        {/* add category name here later*/}
-                        Test
+                        {t.category?.categoryName
+                          ? t.category?.categoryName[0].toUpperCase() +
+                            t.category?.categoryName.slice(
+                              1,
+                              t.category?.categoryName.length,
+                            )
+                          : ""}
                       </p>
                     </div>
                     <div className="w-full flex flex-col items-end gap-1">

@@ -51,34 +51,52 @@ function TransactionsTable() {
       <div className="w-full overflow-x-auto rounded-xl border border-(--border)">
         {/*display transaction table here*/}
         <table className="w-full table-auto text-left text-left text-sm">
-          <thead className="bg-(--surface) text-(--text-primary) text-xs sm:text-sm font-extrabold">
+          <thead className="text-(--accent) text-xs sm:text-sm font-extrabold bg-(--accent-soft)">
             <tr>
-              <th className="px-4 py-3">Date</th>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Category</th>
-              <th className="px-4 py-3">Amount</th>
-              <th className="px-4 py-3">Type</th>
-              <th className="px-4 py-3">Actions</th>
+              <th className="px-4 py-3 border-b border-(--border)">Date</th>
+              <th className="px-4 py-3 border-b border-(--border)">Name</th>
+              <th className="px-4 py-3 border-b border-(--border)">Category</th>
+              <th className="px-4 py-3 border-b border-(--border)">Amount</th>
+              <th className="px-4 py-3 border-b border-(--border)">Type</th>
+              <th className="px-4 py-3 border-b border-(--border)">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-(--border)">
+          <tbody className="divide-y divide-(--border) bg-(--surface)">
             {transactions.length !== 0
               ? transactions.map((t) => {
+                  let date = new Date(t.transactionDate);
+                  let formattedDate = date.toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  });
                   return (
                     <tr key={t.id}>
                       <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
-                        {t.createdAt}
-                      </td>
+                        {formattedDate}
+                      </td>{" "}
                       <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
                         {Capitalize(t.transactionName)}
                       </td>
                       <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
-                        {Capitalize(t.category?.categoryName as string)}
+                        <span
+                          className={`px-4 py-1 text-(--text-primary) rounded-full text-xs font-bold`}
+                          style={{
+                            backgroundColor: t.category?.bgColor,
+                            color: `#ffffff`,
+                          }}
+                        >
+                          {Capitalize(t.category?.categoryName as string)}
+                        </span>
                       </td>
-                      <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
-                        ₹ {t.transactionAmount}
+                      <td
+                        className={`px-4 py-3  sm:text-sm text-xs font-semibold ${t.transactionType == "expense" ? "text-(--danger)" : "text-(--success)"}`}
+                      >
+                        ₹ {t.transactionAmount}{" "}
                       </td>
-                      <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
+                      <td
+                        className={`px-4 py-3 sm:text-sm text-xs font-semibold ${t.transactionType == "expense" ? "text-(--danger)" : "text-(--success)"}`}
+                      >
                         {Capitalize(t.transactionType)}
                       </td>
                       <td className="relative px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">

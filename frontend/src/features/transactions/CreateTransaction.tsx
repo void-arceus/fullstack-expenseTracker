@@ -31,7 +31,13 @@ interface ICategories {
   updatedAt: Date;
 }
 
-function CreateTransaction() {
+interface ICreateTransactionProps {
+  handleShowTransactionForm: (val: boolean) => void;
+}
+
+function CreateTransaction({
+  handleShowTransactionForm,
+}: ICreateTransactionProps) {
   const { user } = useAuth();
   const { displayToast } = useToast();
   const [userCategories, setUserCategories] = useState<ICategories[]>([]);
@@ -230,6 +236,7 @@ function CreateTransaction() {
           <div className="w-full flex items-center justify-end gap-3">
             <button
               type="button"
+              onClick={() => handleShowTransactionForm(false)}
               className="px-3 py-2 text-xs font-semibold border border-(--border) rounded-md hover:cursor-pointer hover:border-(--border-strong) text-(--text-primary) active:scale-[0.98]"
             >
               Cancel
