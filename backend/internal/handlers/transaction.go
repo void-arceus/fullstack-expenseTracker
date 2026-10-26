@@ -21,6 +21,14 @@ type TransactionCredential struct {
 	CategoryID        string    `json:"categoryId"`
 }
 
+type responseData struct {
+	Total        int64                `json:"total"`
+	Page         int64                `json:"page"`
+	Limit        int64                `json:"limit"`
+	TotalPages   int64                `json:"totalPages"`
+	Transactions []models.Transaction `json:"transactions"`
+}
+
 func (h *Handler) AddTransaction(w http.ResponseWriter, r *http.Request) {
 	var reqData TransactionCredential
 	decoder := json.NewDecoder(r.Body)
@@ -143,7 +151,9 @@ func (h *Handler) GetTransactions(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	transactions, err := h.TransactionRepo.GetTransactions(r.Context(), userId, page, limit, filter, sortBy)
+	transactions, total, err := h.TransactionRepo.GetTransactions(r.Context(), userId, page, limit, filter, sortBy)
+	totalPages := int((total + (limit - 1)) / int64(limit))
+
 	if err != nil {
 		fmt.Println("Error: %w", err)
 		http.Error(w, "Failed to get Transactions", http.StatusInternalServerError)
@@ -153,11 +163,17 @@ func (h *Handler) GetTransactions(w http.ResponseWriter, r *http.Request) {
 	response := struct {
 		Status  bool
 		Message string
-		Data    []models.Transaction
+		Data    responseData
 	}{
 		Status:  true,
 		Message: "Transactions fetched successfully",
-		Data:    transactions,
+		Data: responseData{
+			Total:        int64(total),
+			Page:         int64(page),
+			Limit:        int64(limit),
+			TotalPages:   int64(totalPages),
+			Transactions: transactions,
+		},
 	}
 
 	w.WriteHeader(http.StatusOK)

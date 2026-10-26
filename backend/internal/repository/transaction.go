@@ -12,7 +12,7 @@ import (
 
 type TransactionRepository interface {
 	AddTransaction(ctx context.Context, data *models.Transaction) error
-	GetTransactions(ctx context.Context, id bson.ObjectID, page, limit int64, filter, sortBy string) ([]models.Transaction, error)
+	GetTransactions(ctx context.Context, id bson.ObjectID, page, limit int64, filter, sortBy string) ([]models.Transaction, int64, error)
 	UpdateTransaction(ctx context.Context, transactionId, userId bson.ObjectID, data map[string]any) error
 	DeleteTransaction(ctx context.Context, transactionId, userId bson.ObjectID) error
 }
@@ -30,7 +30,7 @@ func (r *MongoTransactionRepository) AddTransaction(ctx context.Context, data *m
 	return nil
 }
 
-func (r *MongoTransactionRepository) GetTransactions(ctx context.Context, id bson.ObjectID, page, limit int64, filter, sortBy string) ([]models.Transaction, error) {
+func (r *MongoTransactionRepository) GetTransactions(ctx context.Context, id bson.ObjectID, page, limit int64, filter, sortBy string) ([]models.Transaction, int64, error) {
 	var transactions []models.Transaction
 	collection := r.DB.GetCollection("transactions")
 
@@ -74,14 +74,16 @@ func (r *MongoTransactionRepository) GetTransactions(ctx context.Context, id bso
 
 	cursor, err := collection.Aggregate(ctx, pipeline)
 	if err != nil {
-		return nil, fmt.Errorf("failed to retrieve the transactins data, %w", err)
+		return nil, -1, fmt.Errorf("failed to retrieve the transactins data, %w", err)
 	}
 	defer cursor.Close(ctx)
 
+	total, err := collection.CountDocuments(ctx, filters)
+
 	if err := cursor.All(ctx, &transactions); err != nil {
-		return nil, fmt.Errorf("internal server error, %w", err)
+		return nil, -1, fmt.Errorf("internal server error, %w", err)
 	}
-	return transactions, nil
+	return transactions, total, nil
 }
 
 func (r *MongoTransactionRepository) UpdateTransaction(ctx context.Context, transactionId, userId bson.ObjectID, data map[string]any) error {
