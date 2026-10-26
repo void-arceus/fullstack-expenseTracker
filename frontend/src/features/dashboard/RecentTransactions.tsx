@@ -13,7 +13,7 @@ function RecentTransactions() {
   async function handleGetTransactions() {
     try {
       const res = await GetTransactions();
-      setTransactions(res.Data);
+      setTransactions(res.Data.transactions);
     } catch (error: any) {
       throw new Error(error.message);
     }

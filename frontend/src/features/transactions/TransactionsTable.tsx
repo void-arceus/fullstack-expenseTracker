@@ -3,20 +3,25 @@ import { GetTransactions } from "../../api/transactions";
 import type { ITransactionInput } from "./CreateTransaction";
 
 type filterValue = "all" | "expense" | "income";
+type sortValue = "desc" | "asc";
 
 function TransactionsTable() {
   const [filter, setFilter] = useState<filterValue>("all");
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [transactions, setTransactions] = useState<ITransactionInput[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [sortBy, setSortBy] = useState<sortValue>("desc");
 
   useEffect(() => {
     GetUserTransactions();
-  }, [filter]);
+  }, [filter, page]);
 
   async function GetUserTransactions() {
     try {
-      const res = await GetTransactions(filter);
-      setTransactions(res.Data as ITransactionInput[]);
+      const res = await GetTransactions(filter, sortBy, String(page), "10");
+      setTransactions(res.Data.transactions as ITransactionInput[]);
+      setTotalPages(res.Data.totalPages);
     } catch (error: any) {
       throw new Error(error.message);
     }
@@ -30,19 +35,28 @@ function TransactionsTable() {
     <div className="h-full w-full flex flex-col gap-4">
       <div className="flex items-center justify-start gap-2">
         <button
-          onClick={() => setFilter("all")}
+          onClick={() => {
+            setFilter("all");
+            setPage(1);
+          }}
           className={`${filter === "all" ? "bg-(--accent) text-[#ffffff] border-(--accent)" : "border-(--border) text-(--text-primary)"} border text-sm font-bold rounded-full py-1.5 px-8 hover:cursor-pointer select-none`}
         >
           All
         </button>
         <button
-          onClick={() => setFilter("income")}
+          onClick={() => {
+            setFilter("income");
+            setPage(1);
+          }}
           className={`${filter === "income" ? "bg-(--accent) text-[#ffffff] border-(--accent)" : "border-(--border) text-(--text-primary)"} text-sm font-bold rounded-full py-1.5 px-8 hover:cursor-pointer border select-none`}
         >
           Income
         </button>
         <button
-          onClick={() => setFilter("expense")}
+          onClick={() => {
+            setFilter("expense");
+            setPage(1);
+          }}
           className={`${filter === "expense" ? "bg-(--accent) text-[#ffffff] border-(--accent)" : "border-(--border) text-(--text-primary)"} text-sm font-bold rounded-full py-1.5 px-8 hover:cursor-pointer border select-none`}
         >
           Expense
@@ -74,13 +88,13 @@ function TransactionsTable() {
                     <tr key={t.id}>
                       <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
                         {formattedDate}
-                      </td>{" "}
+                      </td>
                       <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
                         {Capitalize(t.transactionName)}
                       </td>
                       <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
                         <span
-                          className={`px-4 py-1 text-(--text-primary) rounded-full text-xs font-bold`}
+                          className={`px-4 py-1.5 text-(--text-primary) rounded-full text-xs font-bold`}
                           style={{
                             backgroundColor: t.category?.bgColor,
                             color: `#ffffff`,
@@ -92,7 +106,7 @@ function TransactionsTable() {
                       <td
                         className={`px-4 py-3  sm:text-sm text-xs font-semibold ${t.transactionType == "expense" ? "text-(--danger)" : "text-(--success)"}`}
                       >
-                        ₹ {t.transactionAmount}{" "}
+                        ₹ {t.transactionAmount}
                       </td>
                       <td
                         className={`px-4 py-3 sm:text-sm text-xs font-semibold ${t.transactionType == "expense" ? "text-(--danger)" : "text-(--success)"}`}
@@ -121,6 +135,54 @@ function TransactionsTable() {
                   );
                 })
               : null}
+            <tr>
+              <td colSpan={100}>
+                <div className="w-full p-2 flex items-center justify-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPage(1);
+                    }}
+                    className="px-2 py-1 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                  >
+                    First
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (page == 1) return;
+                      setPage((prev) => prev - 1);
+                    }}
+                    className="px-2 py-1 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                  >
+                    Prev
+                  </button>
+                  <div className="h-7 w-7 text-xs font-bold text-(--accent) border border-(--accent) rounded-full flex items-center justify-center">
+                    {page}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (page == totalPages) return;
+                      setPage((prev) => prev + 1);
+                    }}
+
+                    className="px-2 py-1 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                  >
+                    Next
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPage(totalPages);
+                    }}
+                    className="px-2 py-1 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                  >
+                    Last
+                  </button>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
