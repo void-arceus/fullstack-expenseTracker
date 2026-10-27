@@ -7,7 +7,7 @@ import (
 )
 
 func RegisterCategoryRoutes(mux *http.ServeMux, h handlers.Handler) {
-	mux.Handle("GET /categories/{id}",
+	mux.Handle("GET /categories",
 		middleware.AuthMiddleware(http.HandlerFunc(h.GetCategories)),
 	)
 

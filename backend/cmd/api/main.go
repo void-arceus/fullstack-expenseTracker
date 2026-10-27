@@ -35,16 +35,21 @@ func main() {
 	categoryRepo := &repository.MongoCategoryRepository{
 		DB: database,
 	}
+	budgetRepo := &repository.MongoBudgetRepository{
+		DB: database,
+	}
 
 	handler := handlers.Handler{
 		UserRepo:        userRepo,
 		TransactionRepo: transactionRepo,
 		CategoryRepo:    *categoryRepo,
+		BudgetRepo:      *budgetRepo,
 	}
 
 	routes.RegisterUserRoutes(mux, handler)
 	routes.RegisterTransactionRoutes(mux, handler)
 	routes.RegisterCategoryRoutes(mux, handler)
+	routes.RegisterBudgetRoutes(mux, handler)
 
 	defer func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -63,5 +68,4 @@ func main() {
 	if err := http.ListenAndServe(":8080", middleware.CorsMiddleware(mux)); err != nil {
 		log.Fatalf("Failed to start the server, %v", err)
 	}
-
 }
