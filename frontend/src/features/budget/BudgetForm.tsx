@@ -1,4 +1,9 @@
+import { useState } from "react";
+import type { ICategories } from "../transactions/CreateTransaction";
+
 function BudgetForm() {
+  const [userCategories, setUserCategories] = useState<ICategories | null>();
+
   return (
     <div className="flex-2 border border-(--border) rounded-xl p-2 bg-(--surface)">
       <form className="w-full p-2 flex flex-col items-start justify-start gap-4">

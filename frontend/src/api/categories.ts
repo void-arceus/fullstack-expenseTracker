@@ -3,8 +3,8 @@ import type { ICreateCategory } from "../features/categories/AddCategory";
 
 const BASE_URL = `http://localhost:8080`;
 
-export async function GetCategories(id: string) {
-  const res = await axios.get(`${BASE_URL}/categories/${id}`);
+export async function GetCategories() {
+  const res = await axios.get(`${BASE_URL}/categories`);
   return res.data;
 }
 

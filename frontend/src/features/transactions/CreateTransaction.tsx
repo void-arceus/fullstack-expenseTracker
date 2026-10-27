@@ -20,7 +20,7 @@ export interface ITransactionInput {
   category?: ICategories;
 }
 
-interface ICategories {
+export interface ICategories {
   id: string;
   userId: string;
   categoryName: string;
@@ -59,7 +59,7 @@ function CreateTransaction({
 
   async function getUserCategories() {
     try {
-      const res = await GetCategories(user?._id as string);
+      const res = await GetCategories();
       setUserCategories(res.data);
     } catch (error: any) {
       throw new Error(error?.message);
