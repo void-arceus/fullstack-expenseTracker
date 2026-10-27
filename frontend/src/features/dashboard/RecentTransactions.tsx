@@ -47,9 +47,12 @@ function RecentTransactions() {
                   {/* logo */}
                   <div className="h-10 w-10 flex items-center justify-center">
                     <div
-                      className={`${t.transactionType === "expense" ? "bg-(--danger-soft)" : "bg-(--success-soft)"} h-10 w-10 border border-(--border) rounded-full text-xs font-bold flex items-center justify-center`}
+                      style={{
+                        backgroundColor: t.category?.bgColor,
+                      }}
+                      className={`text-[#ffffff] h-10 w-10 border border-(--border) rounded-full text-xs font-bold flex items-center justify-center`}
                     >
-                      T
+                      {t.category?.categoryName[0].toUpperCase()}
                     </div>
                   </div>
                   <div className="w-full flex items-center">

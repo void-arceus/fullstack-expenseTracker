@@ -86,13 +86,13 @@ function TransactionsTable() {
                   });
                   return (
                     <tr key={t.id}>
-                      <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
+                      <td className="px-4 py-3.5 sm:text-sm text-xs text-(--text-primary) font-semibold">
                         {formattedDate}
                       </td>
-                      <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
+                      <td className="px-4 py-3.5 sm:text-sm text-xs text-(--text-primary) font-semibold">
                         {Capitalize(t.transactionName)}
                       </td>
-                      <td className="px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
+                      <td className="px-4 py-3.5 sm:text-sm text-xs text-(--text-primary) font-semibold">
                         <span
                           className={`px-4 py-1.5 text-(--text-primary) rounded-full text-xs font-bold`}
                           style={{
@@ -104,16 +104,16 @@ function TransactionsTable() {
                         </span>
                       </td>
                       <td
-                        className={`px-4 py-3  sm:text-sm text-xs font-semibold ${t.transactionType == "expense" ? "text-(--danger)" : "text-(--success)"}`}
+                        className={`px-4 py-3.5  sm:text-sm text-xs font-semibold ${t.transactionType == "expense" ? "text-(--danger)" : "text-(--success)"}`}
                       >
                         ₹ {t.transactionAmount}
                       </td>
                       <td
-                        className={`px-4 py-3 sm:text-sm text-xs font-semibold ${t.transactionType == "expense" ? "text-(--danger)" : "text-(--success)"}`}
+                        className={`px-4 py-3.5 sm:text-sm text-xs font-semibold ${t.transactionType == "expense" ? "text-(--danger)" : "text-(--success)"}`}
                       >
                         {Capitalize(t.transactionType)}
                       </td>
-                      <td className="relative px-4 py-3 sm:text-sm text-xs text-(--text-primary) font-semibold">
+                      <td className="relative px-4 py-3.5 sm:text-sm text-xs text-(--text-primary) font-semibold">
                         {showOptions && (
                           <div className="absolute p-1 w-20 border border-(--border) rounded-md bottom-6 flex flex-col items-center justify-center bg-(--surface)">
                             <button className="w-full flex items-center justify-start p-1 hover:cursor-pointer hover:bg-(--accent-soft) rounded-sm text-(--accent) hover:text-(--accent-hover) text-xs font-bold">
@@ -137,13 +137,13 @@ function TransactionsTable() {
               : null}
             <tr>
               <td colSpan={100}>
-                <div className="w-full p-2 flex items-center justify-center gap-4">
+                <div className="w-full py-3.5 flex items-center justify-center gap-4">
                   <button
                     type="button"
                     onClick={() => {
                       setPage(1);
                     }}
-                    className="px-2 py-1 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                    className="px-4 py-2 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
                   >
                     First
                   </button>
@@ -153,7 +153,7 @@ function TransactionsTable() {
                       if (page == 1) return;
                       setPage((prev) => prev - 1);
                     }}
-                    className="px-2 py-1 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                    className="px-4 py-2 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
                   >
                     Prev
                   </button>
