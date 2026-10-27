@@ -11,6 +11,7 @@ import (
 
 type CategoryRepository interface {
 	GetCategories(ctx context.Context, id bson.ObjectID) ([]models.Category, error)
+	AddCategory(ctx context.Context, categoryData models.Category) error
 }
 
 type MongoCategoryRepository struct {
@@ -32,4 +33,15 @@ func (r *MongoCategoryRepository) GetCategories(ctx context.Context, id bson.Obj
 	}
 
 	return categories, nil
+}
+
+func (r *MongoCategoryRepository) AddCategory(ctx context.Context, categoryData models.Category) error {
+	collection := r.DB.GetCollection("categories")
+
+	_, err := collection.InsertOne(ctx, categoryData)
+	if err != nil {
+		return fmt.Errorf("Failed to add category, %w", err)
+	}
+
+	return nil
 }

@@ -10,4 +10,8 @@ func RegisterCategoryRoutes(mux *http.ServeMux, h handlers.Handler) {
 	mux.Handle("GET /categories/{id}",
 		middleware.AuthMiddleware(http.HandlerFunc(h.GetCategories)),
 	)
+
+	mux.Handle("POST /categories",
+		middleware.AuthMiddleware(http.HandlerFunc(h.AddCategory)),
+	)
 }

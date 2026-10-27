@@ -11,7 +11,7 @@ type Category struct {
 	UserID       bson.ObjectID `bson:"userId,omitempty" json:"userId,omitempty"`
 	CategoryName string        `bson:"categoryName" json:"categoryName"`
 	BgColor      string        `bson:"bgColor" json:"bgColor"`
-	CategoryIcon string        `bson:"categoryIcon" json:"categoryIcon"`
+	CategoryIcon string        `bson:"categoryIcon,omitempty" json:"categoryIcon,omitempty"`
 	IsDefault    bool          `bson:"isDefault" json:"isDefault"`
 	CreatedAt    time.Time     `bson:"createdAt" json:"createdAt"`
 	UpdatedAt    time.Time     `bson:"updatedAt" json:"updatedAt"`
