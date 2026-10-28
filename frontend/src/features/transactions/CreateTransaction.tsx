@@ -2,7 +2,6 @@ import { Controller, useForm } from "react-hook-form";
 import { FcBearish, FcBullish } from "react-icons/fc";
 import { useState, useEffect } from "react";
 import { GetCategories } from "../../api/categories";
-import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { AddTransaction } from "../../api/transactions";
 
@@ -38,7 +37,6 @@ interface ICreateTransactionProps {
 function CreateTransaction({
   handleShowTransactionForm,
 }: ICreateTransactionProps) {
-  const { user } = useAuth();
   const { displayToast } = useToast();
   const [userCategories, setUserCategories] = useState<ICategories[]>([]);
   const {

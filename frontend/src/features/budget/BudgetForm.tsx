@@ -1,12 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ICategories } from "../transactions/CreateTransaction";
+import { GetCategories } from "../../api/categories";
+import { useForm } from "react-hook-form";
+import { handleCreateBudget } from "../../api/budget";
+import { useToast } from "../../context/ToastContext";
+
+type Period = "weekly" | "monthly" | "yearly";
+
+export interface IBudget {
+  categoryId: string;
+  budgetAmount: number;
+  period: Period;
+  startDate: string;
+  budgetNote?: string;
+}
 
 function BudgetForm() {
-  const [userCategories, setUserCategories] = useState<ICategories | null>();
+  const [userCategories, setUserCategories] = useState<ICategories[] | null>(
+    null,
+  );
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IBudget>({
+    defaultValues: {
+      categoryId: userCategories ? userCategories[0].id : "",
+    },
+  });
+  const { displayToast } = useToast();
+
+  useEffect(() => {
+    getUserCategories();
+  }, []);
+
+  async function handleFormSubmit(data: IBudget) {
+    let convertedDate = new Date(data.startDate).toISOString();
+    let amount = Number(data.budgetAmount);
+    data.startDate = convertedDate;
+    data.budgetAmount = amount;
+    data.period = "monthly";
+    try {
+      await handleCreateBudget(data);
+      displayToast("success", "Budget created successfully");
+      reset();
+    } catch (error: any) {
+      console.error(error.message);
+      displayToast("error", "Failed to create budget");
+    }
+  }
+
+  async function getUserCategories() {
+    try {
+      const res = await GetCategories();
+      setUserCategories(res.data);
+    } catch (error: any) {
+      console.error(error.message);
+      return;
+    }
+  }
 
   return (
     <div className="flex-2 border border-(--border) rounded-xl p-2 bg-(--surface)">
-      <form className="w-full p-2 flex flex-col items-start justify-start gap-4">
+      <form
+        onSubmit={handleSubmit(handleFormSubmit)}
+        className="w-full p-2 flex flex-col items-start justify-start gap-4"
+      >
         <div className="w-full flex flex-col items-start justify-start gap-2">
           <label
             htmlFor="category"
@@ -14,11 +74,29 @@ function BudgetForm() {
           >
             Category
           </label>
-          <input
+          <select
             id="category"
-            placeholder="e.g food, shopping etc"
-            className="w-full border border-(--border) rounded-lg outline-0 py-2.5 p-2 text-xs text-(--text-secondary) font-semibold focus:border-(--border-strong)"
-          />
+            {...register("categoryId", {
+              required: "You must select a category",
+            })}
+            className="w-full border border-(--border) rounded-lg p-2 text-xs font-semibold text-(--text-secondary) hover:cursor-pointer"
+          >
+            {userCategories
+              ? userCategories.map((c) => {
+                  return (
+                    <option key={c.id} value={c.id}>
+                      {c.categoryName[0].toUpperCase() +
+                        c.categoryName.slice(1)}
+                    </option>
+                  );
+                })
+              : null}
+          </select>
+          {errors.categoryId && (
+            <span className="text-xs font-semibold text-(--danger)">
+              {errors.categoryId.message}
+            </span>
+          )}
         </div>
         <div className="w-full flex flex-col items-start justify-start gap-2">
           <label
@@ -31,8 +109,20 @@ function BudgetForm() {
             id="budgetAmount"
             placeholder="Amount"
             type="number"
+            {...register("budgetAmount", {
+              required: "Budget Amount is required",
+              min: {
+                value: 0,
+                message: "Amount cannot be negative",
+              },
+            })}
             className="w-full border border-(--border) rounded-lg outline-0 py-2.5 p-2 text-xs text-(--text-secondary) font-semibold focus:border-(--border-strong)"
           />
+          {errors.budgetAmount && (
+            <span className="text-xs font-semibold text-(--danger)">
+              {errors.budgetAmount.message}
+            </span>
+          )}
         </div>
         <div className="w-full flex flex-col items-start justify-start gap-2">
           <p className="text-xs font-bold text-(--text-secondary)">
@@ -55,10 +145,18 @@ function BudgetForm() {
             Start Date
           </label>
           <input
+            {...register("startDate", {
+              required: "Start date is required",
+            })}
             id="startDate"
             type="date"
             className="w-full border border-(--border) rounded-lg outline-0 py-2.5 p-2 text-xs text-(--text-secondary) font-semibold focus:border-(--border-strong)"
           />
+          {errors.startDate && (
+            <span className="text-xs font-semibold text-(--danger)">
+              {errors.startDate?.message}
+            </span>
+          )}
         </div>
         <div className="w-full flex flex-col items-start justify-start gap-2">
           <label
@@ -81,7 +179,7 @@ function BudgetForm() {
             Clear
           </button>
           <button
-            type="button"
+            type="submit"
             className="px-4 p-2 bg-(--accent) hover:bg-(--accent-hover) hover:cursor-pointer rounded-lg text-[#ffffff] text-xs font-semibold shadow-sm hover:shadow-md active:scale-[0.96] select-none"
           >
             Create Budget

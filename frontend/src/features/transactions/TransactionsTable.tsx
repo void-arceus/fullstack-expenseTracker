@@ -143,7 +143,7 @@ function TransactionsTable() {
                     onClick={() => {
                       setPage(1);
                     }}
-                    className="px-4 py-2 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                    className="px-2 py-1 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
                   >
                     First
                   </button>
@@ -153,11 +153,11 @@ function TransactionsTable() {
                       if (page == 1) return;
                       setPage((prev) => prev - 1);
                     }}
-                    className="px-4 py-2 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
+                    className="px-2 py-1 border border-(--accent) rounded-md text-xs font-semibold text-(--accent) hover:cursor-pointer active:scale-[0.96] transition transform-scale duration-100 ease-in-out"
                   >
                     Prev
                   </button>
-                  <div className="h-7 w-7 text-xs font-bold text-(--accent) border border-(--accent) rounded-full flex items-center justify-center">
+                  <div className="h-6 w-6 text-xs font-bold text-(--accent) border border-(--accent) rounded-full flex items-center justify-center">
                     {page}
                   </div>
                   <button
