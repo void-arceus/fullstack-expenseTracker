@@ -129,12 +129,19 @@ function BudgetForm() {
             Time Period
           </p>
           <div className="w-full flex items-center justify-start gap-3">
-            <span className="px-6 py-2.5 text-xs font-semibold rounded-lg bg-(--accent) text-[#ffffff] select-none shadow-xs hover:shadow-sm hover:cursor-pointer">
+            <button
+              type="button"
+              className="px-6 py-2.5 text-xs font-semibold rounded-lg bg-(--accent) text-[#ffffff] select-none shadow-xs hover:shadow-sm hover:cursor-pointer"
+            >
               Monthly
-            </span>
-            <span className="px-6 py-2.5 text-xs font-semibold rounded-lg text-(--text-primary) select-none shadow-xs hover:shadow-sm hover:cursor-pointer border border-(--border)">
-              Yearly
-            </span>
+            </button>
+            <button
+              type="button"
+              disabled={true}
+              className="px-6 py-2.5 text-xs font-semibold rounded-lg text-(--text-primary) select-none shadow-xs hover:shadow-sm hover:cursor-pointer border border-(--border) disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Yearly (soon)
+            </button>
           </div>
         </div>
         <div className="w-full flex flex-col items-start justify-start gap-2">

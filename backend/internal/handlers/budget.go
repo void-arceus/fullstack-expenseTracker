@@ -35,7 +35,7 @@ func (h *Handler) CreateBudget(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if budgetData.Period != "weekly" && budgetData.Period != "montly" && budgetData.Period != "yearly" {
+	if budgetData.Period != "weekly" && budgetData.Period != "monthly" && budgetData.Period != "yearly" {
 		http.Error(w, "invalid budget period", http.StatusBadRequest)
 		return
 	}

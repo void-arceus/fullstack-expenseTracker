@@ -28,6 +28,8 @@ func (r *MongoCategoryRepository) GetCategories(ctx context.Context, id bson.Obj
 		return nil, fmt.Errorf("Categories not found")
 	}
 
+	// todo := aggregate the budget data with the category data
+
 	if err := cursor.All(ctx, &categories); err != nil {
 		return nil, fmt.Errorf("Something went wrong")
 	}

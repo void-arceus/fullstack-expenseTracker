@@ -8,7 +8,7 @@ import (
 
 type Budget struct {
 	ID           bson.ObjectID `bson:"_id,omitempty" json:"id"`
-	UserID       bson.ObjectID `bson:"userId" json:"userId"`
+	UserID       bson.ObjectID `bson:"userId" json:"userId omitempty"`
 	CategoryID   bson.ObjectID `bson:"categoryId" json:"categoryId"`
 	BudgetAmount int64         `bson:"budgetAmount" json:"budgetAmount"`
 	Period       string        `bson:"period" json:"period"`

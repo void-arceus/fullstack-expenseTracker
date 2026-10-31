@@ -15,7 +15,7 @@ function TransactionsTable() {
 
   useEffect(() => {
     GetUserTransactions();
-  }, [filter, page]);
+  }, [filter, page, sortBy]);
 
   async function GetUserTransactions() {
     try {
@@ -46,7 +46,6 @@ function TransactionsTable() {
         <button
           onClick={() => {
             setFilter("income");
-            setPage(1);
           }}
           className={`${filter === "income" ? "bg-(--accent) text-[#ffffff] border-(--accent)" : "border-(--border) text-(--text-primary)"} text-sm font-bold rounded-full py-1.5 px-8 hover:cursor-pointer border select-none`}
         >
@@ -60,6 +59,26 @@ function TransactionsTable() {
           className={`${filter === "expense" ? "bg-(--accent) text-[#ffffff] border-(--accent)" : "border-(--border) text-(--text-primary)"} text-sm font-bold rounded-full py-1.5 px-8 hover:cursor-pointer border select-none`}
         >
           Expense
+        </button>
+
+        <button
+          onClick={() => {
+            setSortBy("desc");
+            setPage(1);
+          }}
+          className={`${sortBy === "desc" ? "bg-(--accent) text-[#ffffff] border-(--accent)" : "border-(--border) text-(--text-primary)"} text-sm font-bold rounded-full py-1.5 px-8 hover:cursor-pointer border select-none`}
+        >
+          Latest
+        </button>
+
+        <button
+          onClick={() => {
+            setSortBy("asc");
+            setPage(1);
+          }}
+          className={`${sortBy === "asc" ? "bg-(--accent) text-[#ffffff] border-(--accent)" : "border-(--border) text-(--text-primary)"} text-sm font-bold rounded-full py-1.5 px-8 hover:cursor-pointer border select-none`}
+        >
+          Oldest
         </button>
       </div>
       <div className="w-full overflow-x-auto rounded-xl border border-(--border)">

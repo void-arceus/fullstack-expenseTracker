@@ -59,6 +59,7 @@ function CreateTransaction({
     try {
       const res = await GetCategories();
       setUserCategories(res.data);
+      console.log("Categories:", res.data);
     } catch (error: any) {
       throw new Error(error?.message);
     }
