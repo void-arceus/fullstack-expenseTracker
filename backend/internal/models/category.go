@@ -16,3 +16,15 @@ type Category struct {
 	CreatedAt    time.Time     `bson:"createdAt" json:"createdAt"`
 	UpdatedAt    time.Time     `bson:"updatedAt" json:"updatedAt"`
 }
+
+type UserCategory struct {
+	ID           bson.ObjectID `bson:"_id,omitempty" json:"id"`
+	UserID       bson.ObjectID `bson:"userId,omitempty" json:"userId,omitempty"`
+	CategoryName string        `bson:"categoryName" json:"categoryName"`
+	BgColor      string        `bson:"bgColor" json:"bgColor"`
+	CategoryIcon string        `bson:"categoryIcon,omitempty" json:"categoryIcon,omitempty"`
+	IsDefault    bool          `bson:"isDefault" json:"isDefault"`
+	CreatedAt    time.Time     `bson:"createdAt" json:"createdAt"`
+	UpdatedAt    time.Time     `bson:"updatedAt" json:"updatedAt"`
+	Budget       Budget        `json:"budget"`
+}

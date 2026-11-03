@@ -30,9 +30,9 @@ func (h *Handler) GetCategories(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := struct {
-		Status  bool              `json:"status"`
-		Message string            `json:"message"`
-		Data    []models.Category `json:"data"`
+		Status  bool                  `json:"status"`
+		Message string                `json:"message"`
+		Data    []models.UserCategory `json:"data"`
 	}{
 		Status:  true,
 		Message: "Categories fetched successfully",
