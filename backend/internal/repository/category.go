@@ -34,6 +34,17 @@ func (r *MongoCategoryRepository) GetCategories(ctx context.Context, id bson.Obj
 			{Key: "foreignField", Value: "categoryId"},
 			{Key: "as", Value: "budget"},
 		}}},
+		bson.D{{Key: "$lookup", Value: bson.D{
+			{Key: "from", Value: "transactions"},
+			{Key: "foreignField", Value: "categoryId"},
+			{Key: "localField", Value: "_id"},
+			{Key: "as", Value: "categorySpending"},
+		}}},
+		bson.D{{Key: "$addFields", Value: bson.D{
+			{Key: "totalSpent", Value: bson.D{
+				{Key: "$sum", Value: "$categorySpending.transactionAmount"},
+			}},
+		}}},
 		bson.D{{Key: "$unwind", Value: bson.D{
 			{Key: "path", Value: "$budget"},
 			{Key: "preserveNullAndEmptyArrays", Value: true},

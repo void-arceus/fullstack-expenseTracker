@@ -26,5 +26,6 @@ type UserCategory struct {
 	IsDefault    bool          `bson:"isDefault" json:"isDefault"`
 	CreatedAt    time.Time     `bson:"createdAt" json:"createdAt"`
 	UpdatedAt    time.Time     `bson:"updatedAt" json:"updatedAt"`
+	TotalSpent   int           `json:"totalSpent"`
 	Budget       Budget        `json:"budget"`
 }
