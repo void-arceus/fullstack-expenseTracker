@@ -4,17 +4,24 @@ import { HiMiniPlus } from "react-icons/hi2";
 import { ImSpoonKnife } from "react-icons/im";
 import { IoDocumentText, IoGameController } from "react-icons/io5";
 import { LuShapes } from "react-icons/lu";
+import { useState, useEffect } from "react";
+import { GetCategories } from "../../api/categories";
+import type { IBudget } from "../budget/BudgetForm";
 
 interface ICategories {
   id: number;
-  category: string;
-  monthlyBudget: number;
-  spent: number;
-  remaining: number;
-  progress: number;
+  userId?: number;
+  categoryName: string;
+  bgColor: string;
+  categoryIcon?: string;
+  isDefault: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  totalSpent: number;
+  budget: IBudget;
 }
 
-const categories: ICategories[] = [
+const category = [
   {
     id: 1,
     category: "Food",
@@ -101,6 +108,21 @@ const categoryColors = {
 type CategoryType = keyof typeof categoryColors;
 
 function CategoryDetails() {
+  const [categories, setCategories] = useState<ICategories[] | []>([]);
+
+  useEffect(() => {
+    handleGetCategories();
+  }, []);
+
+  async function handleGetCategories() {
+    try {
+      const res = await GetCategories();
+      setCategories(res.data);
+    } catch (err: any) {
+      console.error(err);
+    }
+  }
+
   return (
     <div className="h-full min-w-0 w-full py-2">
       <div className="h-fit w-full border border-(--border) rounded-xl bg-(--surface) shadow-xs overflow-hidden">
@@ -112,7 +134,7 @@ function CategoryDetails() {
                   Category
                 </th>
                 <th className="w-[15%] text-start px-4 py-2 text-xs font-bold text-(--text-primary)">
-                  Monthly Budget
+                  Budget
                 </th>
                 <th className="w-[15%] text-start px-4 py-2 text-xs font-bold text-(--text-primary)">
                   Spent
@@ -130,12 +152,16 @@ function CategoryDetails() {
             </thead>
 
             <tbody className="[&>tr:last-child>td]:border-b-0">
-              {categories.map((c, index) => {
-                const type = c.category.toLowerCase() as CategoryType;
-
+              {categories.map((c) => {
+                let type = c.categoryName.toLowerCase() as CategoryType;
+                if (!Object.hasOwn(categoryColors, type)) {
+                  type = "other";
+                }
+                const remainingAmount = c.budget?.budgetAmount - c.totalSpent;
+                let progress = 0;
                 return (
-                  <tr key={c.id ?? index}>
-                    <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border)">
+                  <tr key={c.id}>
+                    <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border) overflow-hidden">
                       <div className="flex items-center justify-start gap-2">
                         <div
                           className="h-8 w-8 shrink-0 rounded-full flex items-center justify-center"
@@ -144,25 +170,29 @@ function CategoryDetails() {
                             color: `var(${categoryColors[type].text})`,
                           }}
                         >
-                          {categoryColors[type].icon}
+                          {categoryColors[type]?.icon ||
+                            categoryColors["other"].icon}
                         </div>
 
-                        <span>{c.category}</span>
+                        <span>{c.categoryName}</span>
                       </div>
                     </td>
-
                     <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border) whitespace-nowrap">
-                      ₹{c.monthlyBudget.toLocaleString("en-IN")}
+                      ₹{c.budget?.budgetAmount.toLocaleString("en-IN")}
                     </td>
-
-                    <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border) whitespace-nowrap">
-                      ₹{c.spent.toLocaleString("en-IN")}
+                    <td
+                      className={`px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border) whitespace-nowrap`}
+                    >
+                      ₹{c.totalSpent.toLocaleString("en-IN")}
                     </td>
-
-                    <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border) whitespace-nowrap">
-                      ₹{c.remaining.toLocaleString("en-IN")}
+                    <td
+                      className={`${remainingAmount < 0 ? "text-(--danger)" : "text-(--success)"} px-4 py-2 text-xs font-semibold border-b border-(--border) whitespace-nowrap`}
+                    >
+                      {remainingAmount < 0 ? "- " : ""}₹
+                      {remainingAmount < 0
+                        ? remainingAmount * -1
+                        : remainingAmount.toLocaleString("en-IN")}
                     </td>
-
                     <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border) whitespace-nowrap">
                       <div
                         className="w-full h-2 flex items-center justify-start rounded-full"
@@ -173,14 +203,13 @@ function CategoryDetails() {
                         <div
                           className={`h-2 rounded-full`}
                           style={{
-                            width: `${c.progress}%`,
+                            width: `${progress}%`,
                             backgroundColor: `var(${categoryColors[type].text})`,
                           }}
                         />
                       </div>
-                      {c.progress}%
+                      {progress} %
                     </td>
-
                     <td className="px-4 py-2 text-xs font-semibold text-(--text-secondary) border-b border-(--border)">
                       <button className="text-lg font-bold hover:cursor-pointer">
                         ...
