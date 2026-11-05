@@ -1,6 +1,11 @@
 import CategoryCards from "./CategoryCards";
+import type { IUserCategories } from "./Categories";
 
-function CategoryHeader() {
+interface ICategoryHeaderProps {
+    categories: IUserCategories[];
+}
+
+function CategoryHeader({ categories }: ICategoryHeaderProps) {
     return (
         <div className="w-full py-3 flex flex-col items-start justify-start gap-4">
             <div>
@@ -12,7 +17,7 @@ function CategoryHeader() {
                     better.
                 </p>
             </div>
-            <CategoryCards />
+            <CategoryCards categories={categories} />
         </div>
     );
 }

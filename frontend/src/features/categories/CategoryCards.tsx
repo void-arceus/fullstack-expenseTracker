@@ -2,7 +2,51 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiCategoryAlt } from "react-icons/bi";
 import { LiaCoinsSolid } from "react-icons/lia";
 import { LuChartNoAxesCombined } from "react-icons/lu";
-function CategoryCards() {
+import type { IUserCategories } from "./Categories";
+import { useState, useEffect } from "react";
+
+interface ICategoryCardsProps {
+    categories: IUserCategories[];
+}
+
+interface ICategoryAnalytics {
+    totalSpending: number;
+    averageSpending: number;
+    largestCategory: string;
+    largestCategoryPercentage: number;
+}
+
+function CategoryCards({ categories }: ICategoryCardsProps) {
+    const [categoryAnalytics, setCategoryAnalytics] =
+        useState<ICategoryAnalytics | null>(null);
+
+    function spendingAnalytics() {
+        let spent: number = 0;
+        categories.map((c) => {
+            spent += c.totalSpent;
+        });
+
+        const maxCategory: IUserCategories | null =
+            categories.length > 0
+                ? categories.reduce((a, b) =>
+                      a.totalSpent > b.totalSpent ? a : b,
+                  )
+                : null;
+        const maxSpent: number = maxCategory ? maxCategory?.totalSpent : 0;
+        const largest: number = Math.round((maxSpent / spent) * 100);
+
+        setCategoryAnalytics({
+            totalSpending: spent,
+            averageSpending: spent / categories.length,
+            largestCategory: maxCategory?.categoryName || "",
+            largestCategoryPercentage: largest,
+        });
+    }
+
+    useEffect(() => {
+        spendingAnalytics();
+    }, [categories.length]);
+
     return (
         <div className="max-w-full w-full grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 grid-cols-1 gap-3">
             <div className="border border-(--border) p-4 rounded-xl bg-(--surface) hover:bg-(--surface-hover) flex items-center gap-4">
@@ -16,7 +60,10 @@ function CategoryCards() {
                         Total Spending
                     </p>
                     <h1 className="text-xl font-bold text-(--text-primary)">
-                        $980
+                        ₹
+                        {categoryAnalytics?.totalSpending?.toLocaleString(
+                            "en-EN",
+                        )}
                     </h1>
                     <p className="text-xs text-(--text-secondary) font-semibold">
                         This month
@@ -34,7 +81,7 @@ function CategoryCards() {
                         Categories
                     </p>
                     <h1 className="text-xl font-bold text-(--text-primary)">
-                        5
+                        {categories.length}
                     </h1>
                     <p className="text-xs text-(--text-secondary) font-semibold">
                         Active Categories
@@ -55,10 +102,10 @@ function CategoryCards() {
                         Largest Category
                     </p>
                     <h1 className="text-lg font-bold text-(--text-primary)">
-                        Shopping
+                        {categoryAnalytics?.largestCategory}
                     </h1>
                     <p className="text-xs text-(--text-secondary) font-semibold">
-                        25.5% of total
+                        {categoryAnalytics?.largestCategoryPercentage}% of total
                     </p>
                 </div>
             </div>
@@ -76,7 +123,10 @@ function CategoryCards() {
                         Avg. per category
                     </p>
                     <h1 className="text-xl font-bold text-(--text-primary)">
-                        $196
+                        ₹
+                        {categoryAnalytics?.averageSpending.toLocaleString(
+                            "en-EN",
+                        )}
                     </h1>
                     <p className="text-xs text-(--text-secondary) font-semibold">
                         This month
